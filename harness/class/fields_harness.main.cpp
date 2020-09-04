@@ -50,20 +50,20 @@ void iterate_fields()
 			});
 }
 
-void to_yaml(std::ostream& out, const MyClass* instance, std::string indent) 
+void to_yaml(std::ostream& out, const Test::SimpleType * instance, std::string indent) 
 {
-	out << "test" << "\n";
-	int fields = Class<MyClass>::FieldCount;
-	// non-const iteration.
-	Class<MyClass>::IterateFields(
-			*instance,
-			[&out, &indent](auto& m)
-			{
-				out << indent << &m <<  '\n'; // indent << "- " << m << '\n';
-			});
+	Class<Test::SimpleType>::IterateFieldsAndValues(
+		*instance,
+		[&out](auto& name, auto& value)
+		{
+			out << name << ": " << value << "\n";
+		});
 
+	//for( auto field_name : field_names ) {
+//		out << field_name << ": " << '\n'; 
+//	}
 }
-void to_yaml(std::ostream& out, const MyClass& src, std::string indent) 
+void to_yaml(std::ostream& out, const Test::SimpleType& src, std::string indent) 
 {
    to_yaml(out, &src, indent);
 }
@@ -72,6 +72,7 @@ int main(void) {
   printf("in fields_harness\n");
   iterate_fields();
   MyClass c(123);
-  to_yaml(std::cout, &c, "  ");
+  Test::SimpleType simple{456,1 << 31,'a',"ab",0.123,0.3-0.1};
+  to_yaml(std::cout, &simple, "  ");
 }
 

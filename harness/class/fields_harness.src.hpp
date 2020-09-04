@@ -3,6 +3,17 @@
 
 namespace Test
 {
+	class SimpleType
+	{
+	public:
+		int int_field;
+		long long_field;
+		char char_field;
+		char char_array3[3];
+		float float_field;
+		double double_field;
+	};
+
 	class ComplexType
 	{
 	public:
