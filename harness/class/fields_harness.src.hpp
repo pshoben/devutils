@@ -9,9 +9,14 @@ namespace Test
 		int int_field;
 		long long_field;
 		char char_field;
-		char char_array3[3];
 		float float_field;
 		double double_field;
+		int int_arr2_field[2];
+		long long_arr2_field[2];
+		char char_arr2_field[2];
+		float float_arr2_field[2];
+		double double_arr2_field[2];
+
 	};
 
 	class ComplexType

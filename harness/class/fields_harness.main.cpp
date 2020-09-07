@@ -72,7 +72,13 @@ int main(void) {
   printf("in fields_harness\n");
   iterate_fields();
   MyClass c(123);
-  Test::SimpleType simple{456,1 << 31,'a',"ab",0.123,0.3-0.1};
+  Test::SimpleType simple{ 456,(long)(1 << 31),'a',0.123, 0.3-0.1, 
+			{456,789},
+			{(long)(1 << 31),(long)(1<<31)},
+			"a",
+			{0.123,0.456},
+			{ 0.3-0.1, 0.3-0.2}};
+
   to_yaml(std::cout, &simple, "  ");
 }
 
