@@ -3,6 +3,19 @@
 
 namespace Test
 {
+	struct SimpleType2 {
+		int int_field;
+		long long_field;
+		char char_field;
+		float float_field;
+		double double_field;
+		int int_arr_field[2];
+		long long_arr_field[2];
+		char char_arr_field[4];
+		float float_arr_field[2];
+		double double_arr_field[2];
+	};
+
 	class SimpleType
 	{
 	public:
@@ -11,21 +24,23 @@ namespace Test
 		char char_field;
 		float float_field;
 		double double_field;
-		int int_arr2_field[2];
-		long long_arr2_field[2];
-		char char_arr2_field[2];
-		float float_arr2_field[2];
-		double double_arr2_field[2];
-
+		int int_arr_field[2];
+		long long_arr_field[2];
+		char char_arr_field[4];
+		float float_arr_field[2];
+		double double_arr_field[2];
+		SimpleType2 sub1;
+		SimpleType2 subarray[2];
 	};
-
+/*
 	class ComplexType
 	{
 	public:
 		int field;
 	};
+*/
 }
-
+/*
 class MyClass {
 public:
 	using ComplexType = Test::ComplexType;
@@ -69,5 +84,6 @@ protected:
 private:
 	int private_field;
 };
+*/
 
 #endif //FIELDS_SRC_HPP
