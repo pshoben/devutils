@@ -1,5 +1,7 @@
+#define private public
 #include "fields_harness.src.hpp"
 #include "fields_harness.gen.hpp"
+#undef private
 
 #include <cstdio>
 #include <iostream>
@@ -58,18 +60,15 @@ void to_yaml(std::ostream& out, const Test::SimpleType * instance, std::string i
 		{
 			out << name << value << "\n";
 		});
-
-	//for( auto field_name : field_names ) {
-//		out << field_name << ": " << '\n'; 
-//	}
 }
 void to_yaml(std::ostream& out, const Test::SimpleType& src, std::string indent) 
 {
    to_yaml(out, &src, indent);
 }
 
-int main(void) {
-  printf("in fields_harness\n");
+void test_simpletype(void)
+{
+  printf("in %s:\n", __FUNCTION__);
   //iterate_fields();
   //MyClass c(123);
   Test::SimpleType simple{ 456,(long)(1 << 31),'a',0.123, 0.3-0.1, 
@@ -108,4 +107,58 @@ int main(void) {
 
   to_yaml(std::cout, &simple, "  ");
 }
+
+void to_yaml3(std::ostream& out, const Test::SimpleType3 * instance) 
+{
+	Class<Test::SimpleType3>::IterateFieldsAndValues(
+		*instance,
+		[&out](auto& name, auto& value)
+		{
+			out << name << value << "\n";
+		});
+}
+
+void test_simpletype3(void)
+{
+  printf("in %s:\n", __FUNCTION__);
+  Test::SimpleType3 simple{ 456,(long)(1 << 31),'a',0.123, 0.3-0.1, 2 } ;
+simple.psub1 = new Test::SimpleType2
+{
+556,(long)(1 << 31),'a',0.123, 0.3-0.1, 
+  {556,789},
+   {(long)(1 << 31),(long)(1<<31)},
+   "abc",
+   {1.123,0.456},
+   { 1.3-0.1, 0.3-0.2}
+};
+
+simple.psubarray[0] = new Test::SimpleType2
+ // SompleType[2]
+{
+656,(long)(1 << 31),'a',0.123, 0.3-0.1, 
+  {556,789},
+   {(long)(1 << 31),(long)(1<<31)},
+   "abc",
+   {1.123,0.456},
+   { 1.3-0.1, 0.3-0.2}
+};
+simple.psubarray[1] = new Test::SimpleType2
+{ 756,(long)(1 << 31),'a',0.123, 0.3-0.1, 
+  {756,789},
+   {(long)(1 << 31),(long)(1<<31)},
+   "abc",
+   {1.123,0.456},
+   { 1.3-0.1, 0.3-0.2}
+};
+
+  to_yaml3(std::cout, &simple);
+}
+
+
+int main(void) {
+  test_simpletype();
+
+  test_simpletype3();
+}
+
 

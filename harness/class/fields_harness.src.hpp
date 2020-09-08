@@ -1,8 +1,11 @@
 #ifndef FIELDS_HARNESS_SRC_HPP
 #define FIELDS_HARNESS_SRC_HPP
 
+#include <cstddef>
+
 namespace Test
 {
+
 	struct SimpleType2 {
 		int int_field;
 		long long_field;
@@ -31,6 +34,54 @@ namespace Test
 		double double_arr_field[2];
 		SimpleType2 sub1;
 		SimpleType2 subarray[2];
+	};
+	class BaseType
+	{
+	public:
+		int baseint_field;
+		int * pbaseint_field;
+	};
+
+	class SimpleType3 : public BaseType
+	{
+	public:
+		SimpleType3(int int_field,
+		long long_field,
+		char char_field,
+		float float_field,
+		double double_field,
+		size_t arr_len)
+		{
+			pint_field = new int(int_field);
+			plong_field = new long(long_field);
+			pchar_field = new char(char_field);
+			pfloat_field = new float(float_field);
+			pdouble_field = new double(double_field);
+			for( auto i = 0 ; i < arr_len ; ++i ) {
+				pint_arr_field[i] = new int(int_field);
+				plong_arr_field[i] = new long(long_field);
+				pchar_arr_field[i] = new char(char_field);
+				pfloat_arr_field[i] = new float(float_field);
+				pdouble_arr_field[i] = new double(double_field);
+			}
+		 	psub1 = NULL;
+			psubarray[0] = NULL;
+			psubarray[1] = NULL;
+		}
+		~SimpleType3() { /* TODO RAII */ }
+		SimpleType2 * psub1;
+		SimpleType2 * psubarray[2];
+	private:
+		int * pint_field;
+		long * plong_field;
+		char * pchar_field;
+		float * pfloat_field;
+		double * pdouble_field;
+		int * pint_arr_field[2];
+		long * plong_arr_field[2];
+		char * pchar_arr_field[4];
+		float * pfloat_arr_field[2];
+		double * pdouble_arr_field[2];
 	};
 /*
 	class ComplexType
