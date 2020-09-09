@@ -5,3 +5,4 @@ build
 cmake
 generated
 third_party
+*/tags
