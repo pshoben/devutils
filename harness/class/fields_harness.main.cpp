@@ -41,30 +41,41 @@ using namespace std;
 //	printf("got num fields %d\n", fields);
 //
 //	MyClass instance(123);
+////
+////	// non-const iteration.
+////	Class<MyClass>::IterateFields(
+////			instance,
+////			[&fields, &instance](auto& m)
+////			{
+////				RequireEquals(instance, m);
+////				--fields;
+////			});
+////}
 //
-//	// non-const iteration.
-//	Class<MyClass>::IterateFields(
-//			instance,
-//			[&fields, &instance](auto& m)
-//			{
-//				RequireEquals(instance, m);
-//				--fields;
-//			});
+//void to_yaml(std::ostream& out, const Test::SimpleType * instance, std::string indent) 
+//{
+//	Class<Test::SimpleType>::IterateFieldsAndValues(
+//		*instance,
+//		[&out](auto& name, auto& value)
+//		{
+//			out << name << value << "\n";
+//		});
+//}
+//void to_yaml(std::ostream& out, const Test::SimpleType& src, std::string indent) 
+//{
+//   to_yaml(out, &src, indent);
 //}
 
-void to_yaml(std::ostream& out, const Test::SimpleType * instance, std::string indent) 
+void to_yaml(std::ostream& out, const Test::SimpleType * instance) 
 {
-	Class<Test::SimpleType>::IterateFieldsAndValues(
-		*instance,
-		[&out](auto& name, auto& value)
+	Class<Test::SimpleType>::print_class_yaml(
+		instance, "",
+		[&out](std::string indent, auto& name, auto& value)
 		{
-			out << name << value << "\n";
+			out << "..." << indent << name << value << "\n";
 		});
 }
-void to_yaml(std::ostream& out, const Test::SimpleType& src, std::string indent) 
-{
-   to_yaml(out, &src, indent);
-}
+
 
 void test_simpletype(void)
 {
@@ -105,17 +116,37 @@ void test_simpletype(void)
 }
 				};
 
-  to_yaml(std::cout, &simple, "  ");
+  to_yaml(std::cout, &simple);
 }
+
+//template<typename T>
+//class Print {
+//	std::ostream & out;
+//public:
+//	Print(std::ostream & out):out(out)
+//	{}
+//	void print(std::string indent, auto&name, auto&value) 
+//	{
+//		out << "4.." << indent << name << value << "\n";
+//	}
+//	void operator()(std::string indent, auto&name, auto&value) 
+//	{
+//		print( indent, name, value);
+//	}
+//}
 
 void to_yaml3(std::ostream& out, const Test::SimpleType3 * instance) 
 {
-	Class<Test::SimpleType3>::IterateFieldsAndValues(
-		*instance,
-		[&out](auto& name, auto& value)
-		{
-			out << name << value << "\n";
-		});
+//	Print<Test::SimpleType3>::print(std::cout);
+//	Class<Test::SimpleType3>::print_class_yaml( instance, "", print );
+
+	Class<Test::SimpleType3>::print_class_yaml(
+	instance, "", 
+	[&out](std::string indent, auto& name, auto& value)
+	{
+		//out << indent << name << "\n";
+		out << "3.." << indent << name << value << "\n";
+	});
 }
 
 void test_simpletype3(void)
@@ -152,12 +183,12 @@ simple.psubarray[1] = new Test::SimpleType2
 };
 
   to_yaml3(std::cout, &simple);
+  //Class<Test::SimpleType3>::print_class_yaml( &simple, nt, T lprint)
 }
 
 
 int main(void) {
   test_simpletype();
-
   test_simpletype3();
 }
 

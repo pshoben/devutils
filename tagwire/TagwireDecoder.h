@@ -29,7 +29,7 @@ public:
 		virtual ~TagwireDecoder();
 
 		void setDataStore(const unsigned char * pBuffer, unsigned int pOffset, unsigned int pLength);	
-		MessageDataIf* parseMessage() throw (ParseException);
+		MessageDataIf* parseMessage() noexcept(false); // throw (ParseException);
 		bool hasMoreTags();
 		int getNextTag();
 		void skipUnknownTag();

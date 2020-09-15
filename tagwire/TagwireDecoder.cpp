@@ -44,7 +44,7 @@ void TagwireDecoder::setDataStore(const unsigned char * pBuffer, unsigned int pO
 	mEndIndex = pOffset+pLength;
 }
 
-MessageDataIf* TagwireDecoder::parseMessage() throw (ParseException)
+MessageDataIf* TagwireDecoder::parseMessage() noexcept(false) // throw (ParseException)
 {
 	int tTag = parseInteger<int>();
 	ensureCapacity(1);

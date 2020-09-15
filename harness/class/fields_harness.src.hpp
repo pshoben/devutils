@@ -40,6 +40,10 @@ namespace Test
 	public:
 		int baseint_field;
 		int * pbaseint_field;
+		BaseType(int baseint_field, int pbaseint_field) 
+		: baseint_field(baseint_field)
+		, pbaseint_field(new int(pbaseint_field)) 
+		{}
 	};
 
 	class SimpleType3 : public BaseType
@@ -50,7 +54,7 @@ namespace Test
 		char char_field,
 		float float_field,
 		double double_field,
-		size_t arr_len)
+		size_t arr_len) : BaseType( 0, 100) 
 		{
 			pint_field = new int(int_field);
 			plong_field = new long(long_field);
