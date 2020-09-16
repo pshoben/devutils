@@ -14,7 +14,7 @@ namespace Test
 		double double_field;
 		int int_arr_field[2];
 		long long_arr_field[2];
-		char char_arr_field[4];
+		char char_arr_field[2];
 		float float_arr_field[2];
 		double double_arr_field[2];
 	};
@@ -29,7 +29,7 @@ namespace Test
 		double double_field;
 		int int_arr_field[2];
 		long long_arr_field[2];
-		char char_arr_field[4];
+		char char_arr_field[2];
 		
 float float_arr_field[2];
 		double double_arr_field[2];
@@ -58,21 +58,21 @@ float float_arr_field[2];
 		SimpleType3()
 		: BaseType() 
 		{
-			pint_field = NULL;
-			plong_field = NULL;
-			pchar_field = NULL;
-			pfloat_field = NULL;
-			pdouble_field = NULL;
-//			for( auto i = 0 ; i < arr_len ; ++i ) {
-//				pint_arr_field[i] = NULL;
-//				plong_arr_field[i] = NULL;
-//				pchar_arr_field[i] = NULL;
-//				pfloat_arr_field[i] = NULL;
-//				pdouble_arr_field[i] = NULL;
-//			}
-		 	psub1 = NULL;
-			psubarray[0] = NULL;
-			psubarray[1] = NULL;
+			pint_field = new int(0);
+			plong_field = new long(0);
+			pchar_field = new char('x');
+			pfloat_field = new float(0);
+			pdouble_field = new double(0);
+			for( auto i = 0 ; i < 2 ; ++i ) {
+				pint_arr_field[i] =new int(0);
+				plong_arr_field[i] = new long(0);
+				pchar_arr_field[i] = new char('x');
+				pfloat_arr_field[i] = new float(0);
+				pdouble_arr_field[i] =  new double(0);
+			}
+		 	psub1 = new SimpleType2();
+			psubarray[0] = new SimpleType2();
+			psubarray[1] = new SimpleType2();
 		}
 		SimpleType3(int int_field,
 		long long_field,
@@ -108,7 +108,7 @@ float float_arr_field[2];
 		double * pdouble_field;
 		int * pint_arr_field[2];
 		long * plong_arr_field[2];
-		char * pchar_arr_field[4];
+		char * pchar_arr_field[2];
 		float * pfloat_arr_field[2];
 		double * pdouble_arr_field[2];
 	};

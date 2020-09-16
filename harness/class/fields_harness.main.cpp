@@ -86,14 +86,14 @@ void test_simpletype(void)
   Test::SimpleType simple{ 456,(long)(1 << 31),'a',0.123, 0.3-0.1, 
 			   {456,789},
 			   {(long)(1 << 31),(long)(1<<31)},
-			   "abc",
+			   "a",
 			   {0.123,0.456},
 			   { 0.3-0.1, 0.3-0.2},
 {
 556,(long)(1 << 31),'a',0.123, 0.3-0.1, 
   {556,789},
    {(long)(1 << 31),(long)(1<<31)},
-   "abc",
+   "a",
    {1.123,0.456},
    { 1.3-0.1, 0.3-0.2}
 },
@@ -103,14 +103,14 @@ void test_simpletype(void)
 656,(long)(1 << 31),'a',0.123, 0.3-0.1, 
   {556,789},
    {(long)(1 << 31),(long)(1<<31)},
-   "abc",
+   "a",
    {1.123,0.456},
    { 1.3-0.1, 0.3-0.2}
 },
 { 756,(long)(1 << 31),'a',0.123, 0.3-0.1, 
   {756,789},
    {(long)(1 << 31),(long)(1<<31)},
-   "abc",
+   "a",
    {1.123,0.456},
    { 1.3-0.1, 0.3-0.2}
 }
@@ -157,16 +157,25 @@ void from_yaml3(std::istream& in, Test::SimpleType3 * instance)
 
 	Class<Test::SimpleType3>::read_class_yaml(
 	instance, "", 
-	[&in](std::string indent, auto& name, auto value )
+	[&in](std::string indent, const char * name, char * value )
 	{
+//		char value_buf[64];
+//		memset(value_buf,0,sizeof(value_buf));
+//		in.getline(value_buf,sizeof(value_buf));
+
+//		std::cout << "got line [" << value_buf << "]" << std::endl;
+
 		// read and discard the indent and the name fields
-		int skip_num = indent.size() + sizeof(name);
+		int skip_num = indent.size() + strlen(name);
+		std::cout << "skip_num " << skip_num << "]\n";
+
 		char skip_buf[ skip_num + 1 ];
 		in.get( skip_buf, skip_num );
 
-		std::cout << "GOT : [" << skip_buf << "] ... [" << value << "]\n";
-		// read remaining chars to the variable
-		in >> value ;
+		in.getline(value,1024) ; // overrun meh
+
+		std::cout << "expecting " << "[" << indent << "] ... [ " << name << "] ... skipping : [" << skip_buf << "] ... got: [" << value << "]\n";
+		
 	});
 }
 
@@ -179,7 +188,7 @@ simple.psub1 = new Test::SimpleType2
 556,(long)(1 << 31),'a',0.123, 0.3-0.1, 
   {556,789},
    {(long)(1 << 31),(long)(1<<31)},
-   "abc",
+   "a",
    {1.123,0.456},
    { 1.3-0.1, 0.3-0.2}
 };
@@ -190,7 +199,7 @@ simple.psubarray[0] = new Test::SimpleType2
 656,(long)(1 << 31),'a',0.123, 0.3-0.1, 
   {556,789},
    {(long)(1 << 31),(long)(1<<31)},
-   "abc",
+   "a",
    {1.123,0.456},
    { 1.3-0.1, 0.3-0.2}
 };
@@ -198,7 +207,7 @@ simple.psubarray[1] = new Test::SimpleType2
 { 756,(long)(1 << 31),'a',0.123, 0.3-0.1, 
   {756,789},
    {(long)(1 << 31),(long)(1<<31)},
-   "abc",
+   "a",
    {1.123,0.456},
    { 1.3-0.1, 0.3-0.2}
 };
@@ -216,7 +225,7 @@ simple.psub1 = new Test::SimpleType2
 556,(long)(1 << 31),'a',0.123, 0.3-0.1, 
   {556,789},
    {(long)(1 << 31),(long)(1<<31)},
-   "abc",
+   "a",
    {1.123,0.456},
    { 1.3-0.1, 0.3-0.2}
 };
@@ -227,7 +236,7 @@ simple.psubarray[0] = new Test::SimpleType2
 656,(long)(1 << 31),'a',0.123, 0.3-0.1, 
   {556,789},
    {(long)(1 << 31),(long)(1<<31)},
-   "abc",
+   "a",
    {1.123,0.456},
    { 1.3-0.1, 0.3-0.2}
 };
@@ -235,7 +244,7 @@ simple.psubarray[1] = new Test::SimpleType2
 { 756,(long)(1 << 31),'a',0.123, 0.3-0.1, 
   {756,789},
    {(long)(1 << 31),(long)(1<<31)},
-   "abc",
+   "a",
    {1.123,0.456},
    { 1.3-0.1, 0.3-0.2}
 };
