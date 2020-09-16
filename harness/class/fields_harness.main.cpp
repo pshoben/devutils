@@ -5,6 +5,7 @@
 
 #include <cstdio>
 #include <iostream>
+#include <sstream>
 
 using namespace reflang;
 using namespace std;
@@ -145,7 +146,27 @@ void to_yaml3(std::ostream& out, const Test::SimpleType3 * instance)
 	[&out](std::string indent, auto& name, auto& value)
 	{
 		//out << indent << name << "\n";
-		out << "3.." << indent << name << value << "\n";
+		out << indent << name << value << "\n";
+	});
+}
+
+void from_yaml3(std::istream& in, Test::SimpleType3 * instance) 
+{
+//	Print<Test::SimpleType3>::print(std::cout);
+//	Class<Test::SimpleType3>::print_class_yaml( instance, "", print );
+
+	Class<Test::SimpleType3>::read_class_yaml(
+	instance, "", 
+	[&in](std::string indent, auto& name, auto value )
+	{
+		// read and discard the indent and the name fields
+		int skip_num = indent.size() + sizeof(name);
+		char skip_buf[ skip_num + 1 ];
+		in.get( skip_buf, skip_num );
+
+		std::cout << "GOT : [" << skip_buf << "] ... [" << value << "]\n";
+		// read remaining chars to the variable
+		in >> value ;
 	});
 }
 
@@ -186,10 +207,60 @@ simple.psubarray[1] = new Test::SimpleType2
   //Class<Test::SimpleType3>::print_class_yaml( &simple, nt, T lprint)
 }
 
+void test_read_simpletype3(void)
+{
+  printf("in %s:\n", __FUNCTION__);
+  Test::SimpleType3 simple{ 456,(long)(1 << 31),'a',0.123, 0.3-0.1, 2 } ;
+simple.psub1 = new Test::SimpleType2
+{
+556,(long)(1 << 31),'a',0.123, 0.3-0.1, 
+  {556,789},
+   {(long)(1 << 31),(long)(1<<31)},
+   "abc",
+   {1.123,0.456},
+   { 1.3-0.1, 0.3-0.2}
+};
+
+simple.psubarray[0] = new Test::SimpleType2
+ // SompleType[2]
+{
+656,(long)(1 << 31),'a',0.123, 0.3-0.1, 
+  {556,789},
+   {(long)(1 << 31),(long)(1<<31)},
+   "abc",
+   {1.123,0.456},
+   { 1.3-0.1, 0.3-0.2}
+};
+simple.psubarray[1] = new Test::SimpleType2
+{ 756,(long)(1 << 31),'a',0.123, 0.3-0.1, 
+  {756,789},
+   {(long)(1 << 31),(long)(1<<31)},
+   "abc",
+   {1.123,0.456},
+   { 1.3-0.1, 0.3-0.2}
+};
+
+std::ostringstream string_out;
+  to_yaml3(string_out, &simple);
+  std::cout << string_out.str() ;
+
+  std::istringstream string_in{string_out.str()};
+  Test::SimpleType3 * psimple_copy = new Test::SimpleType3{};
+  from_yaml3(string_in, psimple_copy);
+
+  std::cout << "after copying...";
+
+  to_yaml3(std::cout, psimple_copy);
+
+  //Class<Test::SimpleType3>::print_class_yaml( &simple, nt, T lprint)
+}
+
 
 int main(void) {
-  test_simpletype();
-  test_simpletype3();
+  //test_simpletype();
+  //test_simpletype3();
+  test_read_simpletype3();
+
 }
 
 

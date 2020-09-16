@@ -30,7 +30,8 @@ namespace Test
 		int int_arr_field[2];
 		long long_arr_field[2];
 		char char_arr_field[4];
-		float float_arr_field[2];
+		
+float float_arr_field[2];
 		double double_arr_field[2];
 		SimpleType2 sub1;
 		SimpleType2 subarray[2];
@@ -40,6 +41,11 @@ namespace Test
 	public:
 		int baseint_field;
 		int * pbaseint_field;
+
+		BaseType()
+		: baseint_field(0)
+		, pbaseint_field(NULL)
+		{}
 		BaseType(int baseint_field, int pbaseint_field) 
 		: baseint_field(baseint_field)
 		, pbaseint_field(new int(pbaseint_field)) 
@@ -49,6 +55,25 @@ namespace Test
 	class SimpleType3 : public BaseType
 	{
 	public:
+		SimpleType3()
+		: BaseType() 
+		{
+			pint_field = NULL;
+			plong_field = NULL;
+			pchar_field = NULL;
+			pfloat_field = NULL;
+			pdouble_field = NULL;
+//			for( auto i = 0 ; i < arr_len ; ++i ) {
+//				pint_arr_field[i] = NULL;
+//				plong_arr_field[i] = NULL;
+//				pchar_arr_field[i] = NULL;
+//				pfloat_arr_field[i] = NULL;
+//				pdouble_arr_field[i] = NULL;
+//			}
+		 	psub1 = NULL;
+			psubarray[0] = NULL;
+			psubarray[1] = NULL;
+		}
 		SimpleType3(int int_field,
 		long long_field,
 		char char_field,
