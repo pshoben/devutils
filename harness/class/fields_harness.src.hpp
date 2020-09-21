@@ -31,7 +31,7 @@ namespace Test
 		long long_arr_field[2];
 		char char_arr_field[2];
 		
-float float_arr_field[2];
+		float float_arr_field[2];
 		double double_arr_field[2];
 		SimpleType2 sub1;
 		SimpleType2 subarray[2];
@@ -44,7 +44,7 @@ float float_arr_field[2];
 
 		BaseType()
 		: baseint_field(0)
-		, pbaseint_field(NULL)
+		, pbaseint_field(new int(0))
 		{}
 		BaseType(int baseint_field, int pbaseint_field) 
 		: baseint_field(baseint_field)
@@ -64,7 +64,7 @@ float float_arr_field[2];
 			pfloat_field = new float(0);
 			pdouble_field = new double(0);
 			for( auto i = 0 ; i < 2 ; ++i ) {
-				pint_arr_field[i] =new int(0);
+				pint_arr_field[i] = new int(0);
 				plong_arr_field[i] = new long(0);
 				pchar_arr_field[i] = new char('x');
 				pfloat_arr_field[i] = new float(0);
@@ -100,7 +100,7 @@ float float_arr_field[2];
 		~SimpleType3() { /* TODO RAII */ }
 		SimpleType2 * psub1;
 		SimpleType2 * psubarray[2];
-	private:
+	//private:
 		int * pint_field;
 		long * plong_field;
 		char * pchar_field;

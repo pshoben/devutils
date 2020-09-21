@@ -166,16 +166,22 @@ void from_yaml3(std::istream& in, Test::SimpleType3 * instance)
 //		std::cout << "got line [" << value_buf << "]" << std::endl;
 
 		// read and discard the indent and the name fields
-		int skip_num = indent.size() + strlen(name);
-		std::cout << "skip_num " << skip_num << "]\n";
+		//int skip_num = indent.size() + strlen(name);
+		//std::cout << "skip_num " << skip_num << "]\n";
 
-		char skip_buf[ skip_num + 1 ];
-		in.get( skip_buf, skip_num );
+		//char skip_buf[ skip_num + 1 ];
+		//in.get( skip_buf, skip_num );
+		char temp_buf[1024+1];
+		memset(temp_buf,0,1024+1);
+		in.getline(temp_buf,1024) ;
 
-		in.getline(value,1024) ; // overrun meh
-
-		std::cout << "expecting " << "[" << indent << "] ... [ " << name << "] ... skipping : [" << skip_buf << "] ... got: [" << value << "]\n";
-		
+		char * ptr_last_space = strrchr( temp_buf, ' ');
+		if( ptr_last_space ) {
+			strcpy( value, ptr_last_space+1 );
+		} else {
+			*value=0; // empty string
+		}
+		std::cout << "expecting " << "[" << indent << "] ... [ " << name << "] ... got: [" << value << "]\n";
 	});
 }
 
