@@ -114,8 +114,18 @@ void inline TagwireEncoder::appendValue(const string* pValue)
 	escapeAndAppendUtf8(pValue);
 }
 
+template<class T>
+void TagwireEncoder::appendValue(const T* pValue)
+{
+	if (pValue != NULL)
+	{
+		pValue->pack(*this);
+	}
+}
+
+
 template<>
-void TagwireEncoder::appendValue(const bool& pValue)
+void inline TagwireEncoder::appendValue(const bool& pValue)
 {
 	appendChar(pValue ? 'T':'F');
 }	

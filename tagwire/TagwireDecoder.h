@@ -132,7 +132,7 @@ TagwireDecoder& TagwireDecoder::readArray(vector<T>*& pField)
 			T tType;
 			pField->push_back(parseValue(tType));
 			tSeparatorExpected = true;
-			break;	
+		break;	
 		}
 	}
 	while (tMore && (mIndex < mEndIndex));

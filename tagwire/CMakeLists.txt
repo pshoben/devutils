@@ -7,8 +7,8 @@
 
 add_executable(tagwire_harness 
   tagwire_harness_main.cpp
-  TagwireDecoder.cpp
+  #TagwireDecoder.cpp
   TagwireEncoder.cpp
-  MessageDataIf.cpp
+  #MessageDataIf.cpp
  )
   

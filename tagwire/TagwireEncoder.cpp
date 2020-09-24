@@ -433,7 +433,7 @@ TagwireEncoder& TagwireEncoder::appendMessage(int pAttributeNumber, const Messag
 	return *this;			
 }
 
-	void TagwireEncoder::beginAttribute(int pAttributeNumber)
+void TagwireEncoder::beginAttribute(int pAttributeNumber)
 {
 	if(mPrecededByAttribute) {
 		appendChar('|');

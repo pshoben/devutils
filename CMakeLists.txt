@@ -31,5 +31,5 @@ add_library(libreflang STATIC third_party/reflang/lib/reflang.hpp third_party/re
 #add_subdirectory(third_party)
 add_subdirectory(harness)
 
-#add_subdirectory(tagwire)
+add_subdirectory(tagwire)
 
