@@ -36,6 +36,8 @@ namespace emapi
 	static const int EmapiMessageType_EmapiTaxPreLogonReq = 66;
 	static const int EmapiMessageType_EmapiTaxPreLogonRsp = 67;
 	
+	static const int EmapiMessageType_EmapiRequestMessage = 237;
+
 	static const int EMAPI_TAX_TYPE_ORDER_ENTRY = 1;
 	static const int EMAPI_TAX_TYPE_MARKET_DATA = 2;	
 	static const int EMAPI_TAX_TYPE_REPLAY = 3;	
@@ -43,7 +45,6 @@ namespace emapi
 enum EmapiFlowType {
 	Enum_Flow_PUBLIC_PRICELEVEL_FLOW = 1,
 	Enum_Flow_PUBLIC_PARTITION_FLOW  =  3
-
 };
 
 
@@ -59,7 +60,7 @@ class Emapi
 class EmapiMessage : public MessageDataIf 
 {
 public:
-	virtual void copy(const EmapiMessage &pObject);
+	//virtual void copy(const EmapiMessage &pObject);
 	ByteArray cXMLDictionary;
 	ByteArray cTAPDictionary;
 	ByteArray cTapwireDictionary;
@@ -68,11 +69,11 @@ public:
 	EmapiMessage(const EmapiMessage &pObject);
 	
 	virtual ~EmapiMessage();
-	const string toString() const;
+	//const string toString() const;
 	const int getMessageType() const;
-	virtual EmapiMessage & operator=(const EmapiMessage & pObject);
-	void traceMessage(MessageTrace *pTrace, int pLevel) const;
-	virtual EmapiMessage* clone() const;
+	//virtual EmapiMessage & operator=(const EmapiMessage & pObject);
+	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
+	//virtual EmapiMessage* clone() const;
 
 	virtual void pack(TagwireEncoder& pEncode);
 	virtual void unpack(TagwireDecoder& pDecode);
@@ -90,23 +91,23 @@ public:
 	string * mMessageReference;
 	
 	
-	void copy(const EmapiResponseMessage &pObject);
+	//void copy(const EmapiResponseMessage &pObject);
 	
 	EmapiResponseMessage();
-	EmapiResponseMessage(const EmapiResponseMessage &pObject);
+	//EmapiResponseMessage(const EmapiResponseMessage &pObject);
 	
 	virtual ~EmapiResponseMessage();
 
-	EmapiResponseMessage & operator=(const EmapiResponseMessage & pObject);
+	//EmapiResponseMessage & operator=(const EmapiResponseMessage & pObject);
 
 	virtual void pack(TagwireEncoder& pEncode) const;
 	virtual void unpack(TagwireDecoder& pDecode);
 	virtual const int getClassId() const;
 	virtual const string getMessageName() const;	
 	const int getMessageType() const;	
-	const string toString() const;
-	void traceMessage(MessageTrace *pTrace, int pLevel) const;
-	virtual EmapiResponseMessage* clone() const;
+	//const string toString() const;
+	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
+	//virtual EmapiResponseMessage* clone() const;
 };
 
 class EmapiSimpleRsp : public EmapiResponseMessage 
@@ -114,47 +115,47 @@ class EmapiSimpleRsp : public EmapiResponseMessage
 public:
 	string * mReply;
 	
-	void copy(const EmapiSimpleRsp &pObject);
+	//void copy(const EmapiSimpleRsp &pObject);
 	
 	EmapiSimpleRsp();
-	EmapiSimpleRsp(const EmapiSimpleRsp &pObject);
+	///EmapiSimpleRsp(const EmapiSimpleRsp &pObject);
 	
 	virtual ~EmapiSimpleRsp();
 
-	EmapiSimpleRsp & operator=(const EmapiSimpleRsp & pObject);
+	//EmapiSimpleRsp & operator=(const EmapiSimpleRsp & pObject);
 
 	virtual void pack(TagwireEncoder& pEncode) const;
 	virtual void unpack(TagwireDecoder& pDecode);
 	virtual const int getClassId() const;
 	virtual const string getMessageName() const;	
 	const int getMessageType() const;	
-	const string toString() const;
-	void traceMessage(MessageTrace *pTrace, int pLevel) const;
-	virtual EmapiSimpleRsp* clone() const;
+	//const string toString() const;
+	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
+	//virtual EmapiSimpleRsp* clone() const;
 };
 
 class EmapiRequestMessage : public MessageDataIf 
 {
 public:
-	bool possDup;
+	bool mPossDup;
 	
-	void copy(const EmapiRequestMessage &pObject);
+	//void copy(const EmapiRequestMessage &pObject);
 	
 	EmapiRequestMessage();
-	EmapiRequestMessage(const EmapiRequestMessage &pObject);
+	//EmapiRequestMessage(const EmapiRequestMessage &pObject);
 	
 	virtual ~EmapiRequestMessage();
 
-	EmapiRequestMessage & operator=(const EmapiRequestMessage & pObject);
+	//EmapiRequestMessage & operator=(const EmapiRequestMessage & pObject);
 
 	virtual void pack(TagwireEncoder& pEncode) const;
 	virtual void unpack(TagwireDecoder& pDecode);
 	virtual const int getClassId() const;
 	virtual const string getMessageName() const;	
 	const int getMessageType() const;	
-	const string toString() const;
-	void traceMessage(MessageTrace *pTrace, int pLevel) const;
-	virtual EmapiRequestMessage* clone() const;
+	//const string toString() const;
+	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
+	//virtual EmapiRequestMessage* clone() const;
 };
 
 
@@ -167,23 +168,23 @@ public:
 	int32 mMinorVersion;
 	int32 mMicroVersion;
 	
-	void copy(const EmapiTaxPreLogonReq &pObject);
+	//void copy(const EmapiTaxPreLogonReq &pObject);
 	
 	EmapiTaxPreLogonReq();
-	EmapiTaxPreLogonReq(const EmapiTaxPreLogonReq &pObject);
+	//EmapiTaxPreLogonReq(const EmapiTaxPreLogonReq &pObject);
 	
 	virtual ~EmapiTaxPreLogonReq();
 
-	EmapiTaxPreLogonReq & operator=(const EmapiTaxPreLogonReq & pObject);
+	//EmapiTaxPreLogonReq & operator=(const EmapiTaxPreLogonReq & pObject);
 
 	virtual void pack(TagwireEncoder& pEncode) const;
 	virtual void unpack(TagwireDecoder& pDecode);
 	virtual const int getClassId() const;
 	virtual const string getMessageName() const;	
 	const int getMessageType() const;	
-	const string toString() const;
-	void traceMessage(MessageTrace *pTrace, int pLevel) const;
-	virtual EmapiTaxPreLogonReq* clone() const;
+	//const string toString() const;
+	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
+	//virtual EmapiTaxPreLogonReq* clone() const;
 };
 
 
@@ -196,23 +197,23 @@ public:
 	int32 mMicroVersion;
 	vector<const EmapiTaxConnectorEntry *> *mTaxConnectors;
 	
-	void copy(const EmapiTaxPreLogonRsp &pObject);
+	//void copy(const EmapiTaxPreLogonRsp &pObject);
 	
 	EmapiTaxPreLogonRsp();
-	EmapiTaxPreLogonRsp(const EmapiTaxPreLogonRsp &pObject);
+	//EmapiTaxPreLogonRsp(const EmapiTaxPreLogonRsp &pObject);
 	
 	virtual ~EmapiTaxPreLogonRsp();
 
-	EmapiTaxPreLogonRsp & operator=(const EmapiTaxPreLogonRsp & pObject);
+	//EmapiTaxPreLogonRsp & operator=(const EmapiTaxPreLogonRsp & pObject);
 
 	virtual void pack(TagwireEncoder& pEncode) const;
 	virtual void unpack(TagwireDecoder& pDecode);
 	virtual const int getClassId() const;
 	virtual const string getMessageName() const;	
 	const int getMessageType() const;	
-	const string toString() const;
-	void traceMessage(MessageTrace *pTrace, int pLevel) const;
-	virtual EmapiTaxPreLogonRsp* clone() const;
+	//const string toString() const;
+	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
+	//virtual EmapiTaxPreLogonRsp* clone() const;
 };
 
 
@@ -228,23 +229,23 @@ public:
 	vector<int32> *mSessionTypes;
 	vector<int32> *mSubscriptionGroups;
 	
-	void copy(const EmapiTaxConnectorEntry &pObject);
+	//void copy(const EmapiTaxConnectorEntry &pObject);
 	
 	EmapiTaxConnectorEntry();
-	EmapiTaxConnectorEntry(const EmapiTaxConnectorEntry &pObject);
+	//EmapiTaxConnectorEntry(const EmapiTaxConnectorEntry &pObject);
 	
 	virtual ~EmapiTaxConnectorEntry();
 
-	EmapiTaxConnectorEntry & operator=(const EmapiTaxConnectorEntry & pObject);
+	//EmapiTaxConnectorEntry & operator=(const EmapiTaxConnectorEntry & pObject);
 
 	virtual void pack(TagwireEncoder& pEncode) const;
 	virtual void unpack(TagwireDecoder& pDecode);
 	virtual const int getClassId() const;
 	virtual const string getMessageName() const;	
 	const int getMessageType() const;	
-	const string toString() const;
-	void traceMessage(MessageTrace *pTrace, int pLevel) const;
-	virtual EmapiTaxConnectorEntry* clone() const;
+	//const string toString() const;
+	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
+	//virtual EmapiTaxConnectorEntry* clone() const;
 };
 
 }

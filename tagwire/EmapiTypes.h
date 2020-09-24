@@ -9,6 +9,7 @@
 
 namespace emapi 
 {
+typedef char byte;
 
 typedef char int8;
 typedef short int16;
