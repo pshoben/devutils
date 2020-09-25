@@ -22,6 +22,7 @@ namespace emapi {
 		virtual const string getMessageName() const = 0;
 		//virtual const string toString() const = 0;
 		virtual const int getMessageType() const = 0;
+		virtual const string to_string( string indent ) const = 0 ;
 		//virtual void traceMessage( MessageTrace *pTrace, int pLevel ) const = 0;
 		//virtual MessageDataIf* clone()  const = 0;
 	};

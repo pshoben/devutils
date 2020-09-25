@@ -33,8 +33,8 @@ TagwireDecoder::TagwireDecoder(const unsigned char * pBuffer, unsigned int pOffs
 
 TagwireDecoder::~TagwireDecoder()
 {
-	if (mBuffer)
-		delete mBuffer;
+//	if (mBuffer)
+//		delete mBuffer;
 }
 
 void TagwireDecoder::setDataStore(const unsigned char * pBuffer, unsigned int pOffset, unsigned int pLength)

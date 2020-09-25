@@ -4,7 +4,6 @@
 #define LIBEXPORT
 
 #include <iostream>
-
 #include "ByteArray.h"
 #include "EmapiTypes.h"
 #include "MessageDataIf.h"
@@ -16,6 +15,7 @@
 
 using std::string;
 using std::vector;
+
 
 namespace emapi
 {
@@ -153,6 +153,7 @@ public:
 	virtual const int getClassId() const;
 	virtual const string getMessageName() const;	
 	const int getMessageType() const;	
+	virtual const string to_string( string indent ) const;
 	//const string toString() const;
 	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
 	//virtual EmapiRequestMessage* clone() const;
@@ -182,6 +183,7 @@ public:
 	virtual const int getClassId() const;
 	virtual const string getMessageName() const;	
 	const int getMessageType() const;	
+	virtual const string to_string( string indent ) const;
 	//const string toString() const;
 	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
 	//virtual EmapiTaxPreLogonReq* clone() const;
@@ -243,6 +245,8 @@ public:
 	virtual const int getClassId() const;
 	virtual const string getMessageName() const;	
 	const int getMessageType() const;	
+	virtual const string to_string( string indent ) const;
+
 	//const string toString() const;
 	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
 	//virtual EmapiTaxConnectorEntry* clone() const;

@@ -9,11 +9,20 @@ using std::vector;
 
 namespace emapi {
 
-		
+TagwireEncoder::TagwireEncoder()
+{
+	mCapacity=100;	
+	mBuffer = new unsigned char[mCapacity];
+	mIndex = 0;
+	mPrecededByAttribute = false;
+	ensureCapacity(100);
+}
+
+	
 TagwireEncoder::~TagwireEncoder()
 {
-		if (mBuffer)
-			delete[] mBuffer;
+//		if (mBuffer)
+//			delete[] mBuffer;
 }
 
 unsigned char * TagwireEncoder::getBuffer() { return mBuffer; }
@@ -466,8 +475,8 @@ void TagwireEncoder::escapeAndAppendUtf8(const string* pString)
 		// NYI escaping 
 		char tChar = pString->at(tPos++);
 		mBuffer[mIndex++]=tChar;
+		--tLeft;
 	}
-	--tLeft;
 }
 	
 void TagwireEncoder::ensureCapacity(unsigned int pSize)
@@ -476,6 +485,7 @@ void TagwireEncoder::ensureCapacity(unsigned int pSize)
 	{
 			unsigned int tNewSize = std::min<unsigned int>(mCapacity*2, pSize *2);
 			unsigned char * tNewBuffer = new unsigned char[tNewSize];
+//			delete[] mBuffer;
 			memcpy(tNewBuffer, mBuffer, sizeof(unsigned char) * mIndex);
 			mBuffer = tNewBuffer;
 			mCapacity = tNewSize;

@@ -1,6 +1,12 @@
+
+#include <sstream>
+
 #include "emapi.h"
 #include "TagwireDecoder.h"
 #include "TagwireEncoder.h"
+
+using std::string;
+using std::stringstream;
 
 namespace emapi
 {
@@ -63,10 +69,15 @@ EmapiRequestMessage::~EmapiRequestMessage()
 {
 }
 
-//const string EmapiRequestMessage::toString() const
-//{
-//	return " EmapiRequestMessage::toString";
-//}
+const string EmapiRequestMessage::to_string(string indent) const
+{
+	stringstream ss;
+	ss << indent << getMessageName() << ":\n" 
+	<< indent << "mPossDup: " << mPossDup << "\n";
+	
+	string ret = ss.str();
+	return ret;
+}
 
 //void EmapiRequestMessage::copy(const EmapiRequestMessage & pObject )
 //{
@@ -139,10 +150,20 @@ EmapiTaxPreLogonReq::~EmapiTaxPreLogonReq()
 	}
 }
 
-//const string EmapiTaxPreLogonReq::toString() const
-//{
-//	return " EmapiTaxPreLogonReq::toString";
-//}
+const string EmapiTaxPreLogonReq::to_string(string indent) const
+{
+	stringstream ss;
+	ss << indent << getMessageName() << ":\n"
+	<< static_cast<EmapiRequestMessage>(*this).to_string( indent + "    " ) << "\n"
+	<< indent << "mMember: " << (( mMember ) ? *mMember : string( "null" )) << "\n" 
+	<< indent << "mUser: " << (( mUser ) ? *mUser : string( "null" )) << "\n"
+	<< indent << "mMajorVersion: " << mMajorVersion << "\n" << "\n"
+	<< indent << "mMinorVersion: " << mMinorVersion << "\n"
+	<< indent << "mMicroVersion: " << mMicroVersion << "\n";
+
+	string ret = ss.str();
+	return ret;
+}
 
 const int EmapiTaxPreLogonReq::getMessageType() const
 {

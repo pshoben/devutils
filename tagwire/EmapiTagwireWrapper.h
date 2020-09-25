@@ -20,7 +20,7 @@ public:
 	EmapiTagwireWrapper(ByteArray& pByteArray);
 	virtual ~EmapiTagwireWrapper();
 
-	virtual const string toString() const;
+	virtual const string to_string( string indent ) const;
 	virtual const int getMessageType() const;
 
 	virtual void pack( TagwireEncoder& pEncoder) const ;
