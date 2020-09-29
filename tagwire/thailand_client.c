@@ -119,7 +119,8 @@ void client_run()
 
 			printf("sending message: \"%s\"\n", send_buffer );
 			write(sockfd, send_buffer, strlen(send_buffer) + 1);
-	
+
+			int countdown = 1000;
 			bzero(buf, sizeof(buf));
 			do {	
 			       	n = read(sockfd, buf, sizeof(buf));
@@ -130,12 +131,12 @@ void client_run()
 					p+= n;
 					bzero(buf, sizeof(buf));
 				}
+				usleep(1000);
 				//c -= n;
 				//if (c <= 0) {
 			//		break;
 				//}
-			} while( errno == EWOULDBLOCK && ( n<1 ));
-
+			} while( errno == EWOULDBLOCK && ( n<1 ) && countdown-->0 );
 			*p=0; // add null terminator
 			printf("recv message:\"%s\"\n",copy_recv_buffer);
 		}
