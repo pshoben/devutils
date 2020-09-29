@@ -12,4 +12,7 @@ add_executable(tagwire_harness
   EmapiTagwireWrapper.cpp
   emapi.cpp
  )
-  
+ 
+add_executable(thailand_sim thailand_sim.c)
+add_executable(thailand_client thailand_client.c)
+
