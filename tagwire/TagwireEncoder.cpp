@@ -10,14 +10,22 @@ using std::vector;
 namespace emapi {
 
 TagwireEncoder::TagwireEncoder()
+	:mBuffer(new unsigned char[512]),
+	mCapacity(512),
+	mIndex(0),
+	mPrecededByAttribute(false)
 {
-	mCapacity=100;	
-	mBuffer = new unsigned char[mCapacity];
-	mIndex = 0;
-	mPrecededByAttribute = false;
-	ensureCapacity(100);
 }
 
+TagwireEncoder::TagwireEncoder(int pMessageType)
+	:mBuffer(new unsigned char[512]),
+	mCapacity(512),
+	mIndex(0),
+	mPrecededByAttribute(false)
+{
+	appendInteger<int>(pMessageType);
+	appendChar(TAGWIRE_EQUALS);
+}
 	
 TagwireEncoder::~TagwireEncoder()
 {

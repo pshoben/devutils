@@ -59,7 +59,11 @@ const string EmapiTagwireWrapper::to_string( string indent ) const
 }
 const int EmapiTagwireWrapper::getMessageType() const
 {
-	return 1 ; //trick
+	if( mMessage ) {	
+		return mMessage->getMessageType() ; //trick
+	} else {
+		return 1;
+	}
 }
 
 //void EmapiTagwireWrapper::traceMessage( MessageTrace * pTrace, int pLevel) const 

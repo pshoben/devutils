@@ -32,7 +32,7 @@ void test_tpl()
 	tpl_req.unpack(decoder);
 	cout << "wrapper\n" << tpl_req.to_string("");
 
-	TagwireEncoder encoder{};
+	TagwireEncoder encoder(tpl_req.getMessageType());
 	tpl_req.pack(encoder);
 
 	cout << "packed: " << encoder.getBuffer() << "\n";
