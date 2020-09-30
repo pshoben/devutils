@@ -37,6 +37,9 @@ namespace emapi
 	static const int EmapiMessageType_EmapiTaxPreLogonRsp = 67;
 	
 	static const int EmapiMessageType_EmapiRequestMessage = 237;
+	static const int EmapiMessageType_EmapiResponseMessage = 230;
+
+	static const int EmapiMessageType_EmapiSimpleRsp = 231;
 
 	static const int EMAPI_TAX_TYPE_ORDER_ENTRY = 1;
 	static const int EMAPI_TAX_TYPE_MARKET_DATA = 2;	
@@ -89,8 +92,7 @@ public:
 	vector<int32> * mSubCode;
 	string * mRequestId;
 	string * mMessageReference;
-	
-	
+
 	//void copy(const EmapiResponseMessage &pObject);
 	
 	EmapiResponseMessage();
@@ -105,6 +107,7 @@ public:
 	virtual const int getClassId() const;
 	virtual const string getMessageName() const;	
 	const int getMessageType() const;	
+	virtual const string to_string( string indent ) const;
 	//const string toString() const;
 	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
 	//virtual EmapiResponseMessage* clone() const;
@@ -129,6 +132,7 @@ public:
 	virtual const int getClassId() const;
 	virtual const string getMessageName() const;	
 	const int getMessageType() const;	
+	virtual const string to_string( string indent ) const;
 	//const string toString() const;
 	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
 	//virtual EmapiSimpleRsp* clone() const;
@@ -196,7 +200,7 @@ public:
 	string * mAddress;
 	int32 * mPort;
 	int64 * mTicket;
-	int32 mMicroVersion;
+	//int32 mMicroVersion;
 	vector<const EmapiTaxConnectorEntry *> *mTaxConnectors;
 	
 	//void copy(const EmapiTaxPreLogonRsp &pObject);
@@ -213,6 +217,7 @@ public:
 	virtual const int getClassId() const;
 	virtual const string getMessageName() const;	
 	const int getMessageType() const;	
+	virtual const string to_string( string indent ) const;
 	//const string toString() const;
 	//void traceMessage(MessageTrace *pTrace, int pLevel) const;
 	//virtual EmapiTaxPreLogonRsp* clone() const;
@@ -227,7 +232,6 @@ public:
 	int32 * mIpPort;
 	string * mIpAddress;
 	int64 * mLoginTicket;
-	int32 mMicroVersion;
 	vector<int32> *mSessionTypes;
 	vector<int32> *mSubscriptionGroups;
 	

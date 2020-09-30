@@ -144,7 +144,7 @@ template<class T>
 inline const T * TagwireDecoder::parseValue(const T*& pVal)
 {	
 	T * tTmp = new T();
-	readMessage(tTmp);
+	// TODO readMessage(tTmp);
 	return tTmp;
 }
 	

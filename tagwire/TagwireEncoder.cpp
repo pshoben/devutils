@@ -252,7 +252,7 @@ void TagwireEncoder::appendIntegerInt64(const int64 pValue)
 	}
 }
 	
-TagwireEncoder& TagwireEncoder::appendArrayInt8(int pAttributeNumber, vector<const int8*>* pValues)
+TagwireEncoder& TagwireEncoder::appendArrayInt8(int pAttributeNumber, vector<int8*>* pValues)
 {
 	if(pValues!=NULL) {
 		beginAttribute(pAttributeNumber);
@@ -276,7 +276,7 @@ TagwireEncoder& TagwireEncoder::appendArrayInt8(int pAttributeNumber, vector<con
 	return *this;			
 }	
 
-TagwireEncoder& TagwireEncoder::appendArrayInt16(int pAttributeNumber, vector<const int16*>* pValues)
+TagwireEncoder& TagwireEncoder::appendArrayInt16(int pAttributeNumber, vector<int16*>* pValues)
 {
 	if(pValues!=NULL) {
 		beginAttribute(pAttributeNumber);
@@ -299,7 +299,7 @@ TagwireEncoder& TagwireEncoder::appendArrayInt16(int pAttributeNumber, vector<co
 	}
 	return *this;				
 }	
-TagwireEncoder& TagwireEncoder::appendArrayInt32(int pAttributeNumber, vector<const int32*>* pValues)
+TagwireEncoder& TagwireEncoder::appendArrayInt32(int pAttributeNumber, vector<int32*>* pValues)
 {
 	if(pValues!=NULL) {
 		beginAttribute(pAttributeNumber);
@@ -322,7 +322,7 @@ TagwireEncoder& TagwireEncoder::appendArrayInt32(int pAttributeNumber, vector<co
 	}
 	return *this;			
 }		
-TagwireEncoder& TagwireEncoder::appendArrayInt64(int pAttributeNumber, vector<const int64*>* pValues)
+TagwireEncoder& TagwireEncoder::appendArrayInt64(int pAttributeNumber, vector<int64*>* pValues)
 {
 	if(pValues!=NULL) {
 		beginAttribute(pAttributeNumber);
@@ -346,7 +346,7 @@ TagwireEncoder& TagwireEncoder::appendArrayInt64(int pAttributeNumber, vector<co
 	return *this;			
 }		
 
-TagwireEncoder& TagwireEncoder::appendArrayInt8(int pAttributeNumber, vector<const int8>* pValues)
+TagwireEncoder& TagwireEncoder::appendArrayInt8(int pAttributeNumber, vector< int8>* pValues)
 {
 	if(pValues!=NULL) {
 		beginAttribute(pAttributeNumber);
@@ -369,7 +369,7 @@ TagwireEncoder& TagwireEncoder::appendArrayInt8(int pAttributeNumber, vector<con
 	}
 	return *this;			
 }		
-TagwireEncoder& TagwireEncoder::appendArrayInt16(int pAttributeNumber, vector<const int16>* pValues)
+TagwireEncoder& TagwireEncoder::appendArrayInt16(int pAttributeNumber, vector< int16>* pValues)
 {
 	if(pValues!=NULL) {
 		beginAttribute(pAttributeNumber);
@@ -392,7 +392,7 @@ TagwireEncoder& TagwireEncoder::appendArrayInt16(int pAttributeNumber, vector<co
 	}
 	return *this;			
 }		
-TagwireEncoder& TagwireEncoder::appendArrayInt32(int pAttributeNumber, vector<const int32>* pValues)
+TagwireEncoder& TagwireEncoder::appendArrayInt32(int pAttributeNumber, vector< int32>* pValues)
 {
 	if(pValues!=NULL) {
 		beginAttribute(pAttributeNumber);
@@ -415,7 +415,7 @@ TagwireEncoder& TagwireEncoder::appendArrayInt32(int pAttributeNumber, vector<co
 	}
 	return *this;		
 }		
-TagwireEncoder& TagwireEncoder::appendArrayInt64(int pAttributeNumber, vector<const int64>* pValues)
+TagwireEncoder& TagwireEncoder::appendArrayInt64(int pAttributeNumber, vector< int64>* pValues)
 {
 	if(pValues!=NULL) {
 		beginAttribute(pAttributeNumber);

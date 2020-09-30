@@ -49,17 +49,17 @@ class TagwireEncoder
 		void appendIntegerInt64(const int64 pValue);
 		
 		template<class T>
-		TagwireEncoder& appendArray(int pAttributeNumber, const vector<T>* pValues);
+		TagwireEncoder& appendArray(int pAttributeNumber, const vector< T>* pValues);
 		
-		TagwireEncoder& appendArrayInt8(int pAttributeNumber, vector<const int8*>* pValues);		
-		TagwireEncoder& appendArrayInt16(int pAttributeNumber, vector<const int16*>* pValues);		
-		TagwireEncoder& appendArrayInt32(int pAttributeNumber, vector<const int32*>* pValues);		
-		TagwireEncoder& appendArrayInt64(int pAttributeNumber, vector<const int64*>* pValues);		
+		TagwireEncoder& appendArrayInt8(int pAttributeNumber, vector<int8*>* pValues);		
+		TagwireEncoder& appendArrayInt16(int pAttributeNumber, vector<int16*>* pValues);		
+		TagwireEncoder& appendArrayInt32(int pAttributeNumber, vector<int32*>* pValues);		
+		TagwireEncoder& appendArrayInt64(int pAttributeNumber, vector<int64*>* pValues);		
 
-		TagwireEncoder& appendArrayInt8(int pAttributeNumber, vector<const int8>* pValues);		
-		TagwireEncoder& appendArrayInt16(int pAttributeNumber, vector<const int16>* pValues);		
-		TagwireEncoder& appendArrayInt32(int pAttributeNumber, vector<const int32>* pValues);		
-		TagwireEncoder& appendArrayInt64(int pAttributeNumber, vector<const int64>* pValues);	
+		TagwireEncoder& appendArrayInt8(int pAttributeNumber, vector<int8>* pValues);		
+		TagwireEncoder& appendArrayInt16(int pAttributeNumber, vector<int16>* pValues);		
+		TagwireEncoder& appendArrayInt32(int pAttributeNumber, vector<int32>* pValues);		
+		TagwireEncoder& appendArrayInt64(int pAttributeNumber, vector<int64>* pValues);	
 
 		TagwireEncoder& appendMessage(int pAttributeNumber, const MessageDataIf* pValue);	
 

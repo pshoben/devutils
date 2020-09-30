@@ -28,30 +28,47 @@ typedef unsigned long long uint64;
 #define I64FMT			"%lld"
 #define UI64FMT			"%llu"
 
-bool * copyAttribute( const bool pValue );
-int8 * copyAttribute( const int8 pValue );
-int16 * copyAttribute( const int16 pValue );
-int32 * copyAttribute( const int32 pValue );
-uint8 * copyAttribute( const uint8 pValue );
-uint16 * copyAttribute( const uint16 pValue );
-uint32 * copyAttribute( const uint32 pValue );
-std::string * copyAttribute( const std::string &pValue );
-float * copyAttribute( const float pValue );
-double * copyAttribute( const double pValue );
-int64 * copyAttribute( const int64 pValue );
+//template <typename T>
+//T * copyAttribute(const T pValue) 
+//{
+//  T * x = new T;
+//  *x = pValue;
+//  return x;
+//}
+//bool * copyAttribute( const bool pValue );
+//int8 * copyAttribute( const int8 pValue );
+//int16 * copyAttribute( const int16 pValue );
+//int32 * copyAttribute( const int32 pValue );
+//uint8 * copyAttribute( const uint8 pValue );
+//uint16 * copyAttribute( const uint16 pValue );
+//uint32 * copyAttribute( const uint32 pValue );
+//std::string * copyAttribute( const std::string &pValue );
+//float * copyAttribute( const float pValue );
+//double * copyAttribute( const double pValue );
+//int64 * copyAttribute( const int64 pValue );
 
-bool * copyAttribute( const bool *pValue );
-int8 * copyAttribute( const int8 *pValue );
-int16 * copyAttribute( const int16 *pValue );
-int32 * copyAttribute( const int32 *pValue );
-uint8 * copyAttribute( const uint8 *pValue );
-uint16 * copyAttribute( const uint16 *pValue );
-uint32 * copyAttribute( const uint32 *pValue );
-std::string * copyAttribute( const std::string *pValue );
-float * copyAttribute( const float *pValue );
-double * copyAttribute( const double *pValue );
-int64 * copyAttribute( const int64 *pValue );
-ByteArray * copyAttribute( const ByteArray *pValue );
+template <typename T>
+T * copyAttribute(const T * pValue) 
+{
+  if( pValue == NULL) {
+    return NULL;
+  }
+  T * x = new T;
+  *x = *pValue;
+  return x;
+}
+//bool * copyAttribute( const bool *pValue );
+//int8 * copyAttribute( const int8 *pValue );
+//int16 * copyAttribute( const int16 *pValue );
+//int32 * copyAttribute( const int32 *pValue );
+//uint8 * copyAttribute( const uint8 *pValue );
+//uint16 * copyAttribute( const uint16 *pValue );
+//uint32 * copyAttribute( const uint32 *pValue );
+//std::string * copyAttribute( const std::string *pValue );
+//float * copyAttribute( const float *pValue );
+//double * copyAttribute( const double *pValue );
+//int64 * copyAttribute( const int64 *pValue );
+//ByteArray * copyAttribute( const ByteArray *pValue );
 
 std::vector<bool > * copyArray( const std::vector< bool > *pArray);
 std::vector<int8 > * copyArray( const std::vector< int8 > *pArray);
