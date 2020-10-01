@@ -29,6 +29,10 @@ namespace emapi
 	class EmapiPublicMulticastContent;
 	class EmapiPublicMulticastPartition;
 	class EmapiProteusRefDataMessage;
+	class EmapiAbstractMeEvent;
+
+	static const int EmapiMessageType_EmapiProteusRefDataMessage = 236;
+	static const int EmapiMessageType_EmapiAbstractMeEvent = 238;
 
 	static const int EmapiMessageType_EmapiOrderInsertReq = 1;
 	static const int EmapiMessageType_EmapiOrderUpdateReq = 8;
@@ -53,8 +57,6 @@ namespace emapi
 	static const int EmapiMessageType_EmapiPublicMulitcastAddress = 110;
 	static const int EmapiMessageType_EmapiPublicMulitcastContent = 108;
 	static const int EmapiMessageType_EmapiPublicMulitcastPartition = 109;
-
-	static const int EmapiProteusRefDataMessage = 236;
 
 	static const int EmapiMessageType_EmapiRequestMessage = 237;
 	static const int EmapiMessageType_EmapiResponseMessage = 230;
@@ -281,9 +283,9 @@ public:
 	string * mKey;
 	string * mCacheId;
 	int32 * mAction;
-	int64 mStatsSequenceNumber;
+	int64 mStateSequenceNumber;
 	string * mUniqueObjectId;
-	string * mTimestamp;
+	string * mTimeStamp;
 	bool * mIsDeleted;
 
 	string * mPmcSourceAddress;

@@ -16,6 +16,11 @@ MessageDataIf * getMessageClass( const int pClassId )
 {
 	switch( pClassId ) 
 	{
+	case EmapiMessageType_EmapiAbstractMeEvent:
+		return new EmapiAbstractMeEvent();
+	case EmapiMessageType_EmapiProteusRefDataMessage:
+		return new EmapiProteusRefDataMessage();
+	
 //	case EmapiMessageType_EmapiOrderInsertReq:
 //		return new EmapiOrderInsertReq();
 //	case EmapiMessageType_EmapiOrderCancelReq:
@@ -51,6 +56,220 @@ MessageDataIf * getMessageClass( const int pClassId )
 	}
 	return NULL;
 }
+
+/* -------------------------------------------------
+ */
+EmapiAbstractMeEvent::EmapiAbstractMeEvent()
+{	
+	mSubscriptionGroup = NULL;
+	mSequenceNumber = NULL;
+	mTimeOfEvent = NULL;
+	mSequenceIndicator = 0L;
+}
+
+//EmapiAbstractMeEvent::EmapiAbstractMeEvent(const EmapiAbstractMeEvent & pObject )
+//{	
+//	mPossDup = false;
+////	copy( pObject );
+//}
+
+
+EmapiAbstractMeEvent::~EmapiAbstractMeEvent()
+{
+}
+
+const string EmapiAbstractMeEvent::to_string(string indent) const
+{
+	stringstream ss;
+	ss << indent << getMessageName() << ":\n" ;
+	ss << indent << "mSubscriptionGroup: " << mSubscriptionGroup << "\n";
+	ss << indent << "mSequenceNumber: " << mSequenceNumber << "\n";
+	ss << indent << "mTimeOfEvent: " << mTimeOfEvent << "\n";
+	ss << indent << "mSequenceIndicator: " << mSequenceIndicator << "\n";
+
+	string ret = ss.str();
+	return ret;
+}
+
+//void EmapiAbstractMeEvent::copy(const EmapiAbstractMeEvent & pObject )
+//{
+//	if (this == &pObject)
+//		return;	
+//}
+
+const int EmapiAbstractMeEvent::getMessageType() const
+{
+	return EmapiMessageType_EmapiAbstractMeEvent;
+}
+
+
+//void EmapiAbstractMeEvent::traceMessage(MessageTrace *pTrace, int pLevel) const
+//{
+//}
+
+
+void EmapiAbstractMeEvent::unpack(TagwireDecoder& pDecoder)
+{
+	while( pDecoder.hasMoreTags()) {
+		int tTag = pDecoder.getNextTag();
+		switch(tTag) {
+		case 1:
+			pDecoder.readInteger(mSubscriptionGroup);
+			mSubscriptionGroup = copyAttribute( mSubscriptionGroup );
+			break;
+		case 2:
+			pDecoder.readLong(mSequenceNumber);
+			break;
+		case 3:
+			pDecoder.readString(mTimeOfEvent);
+			break;
+		case 4:
+			pDecoder.readBoolean(mSequenceIndicator);
+			mSequenceIndicator = copyAttribute( mSequenceIndicator );
+			break;
+		default:
+			pDecoder.skipUnknownTag();
+			break;
+		}
+	}
+}
+
+void EmapiAbstractMeEvent::pack(TagwireEncoder& pEncoder) const
+{
+	pEncoder.beginGroup();
+	pEncoder.appendInteger(1, mSubscriptionGroup);
+	pEncoder.appendLong(2, mSequenceNumber);
+	pEncoder.appendString(3, mTimeOfEvent);
+	pEncoder.appendBoolean(4, mSequenceIndicator);
+	pEncoder.endGroup();
+}
+
+const int EmapiAbstractMeEvent::getClassId() const
+{
+	return 238;
+}
+
+const string EmapiAbstractMeEvent::getMessageName() const
+{
+	return "EmapiAbstractMeEvent";
+}
+
+
+/* -------------------------------------------------
+ */
+EmapiProteusRefDataMessage::EmapiProteusRefDataMessage()
+{	
+	mKey = NULL;
+	mCacheId = NULL;
+	mAction = NULL;
+	mStateSequenceNumber = 0L;
+	mUniqueObjectId = NULL;
+	mTimeStamp = NULL;
+	mIsDeleted = NULL;
+}
+
+//EmapiProteusRefDataMessage::EmapiProteusRefDataMessage(const EmapiProteusRefDataMessage & pObject )
+//{	
+//	mPossDup = false;
+////	copy( pObject );
+//}
+
+
+EmapiProteusRefDataMessage::~EmapiProteusRefDataMessage()
+{
+}
+
+const string EmapiProteusRefDataMessage::to_string(string indent) const
+{
+	stringstream ss;
+	ss << indent << getMessageName() << ":\n"; 
+	ss << indent << "mKey: " << mKey << "\n";
+	ss << indent << "mCacheId: " << mCacheId << "\n";
+	ss << indent << "mStateSequenceNumber: " << mStateSequenceNumber << "\n";
+	ss << indent << "mUniqueObjectId: " << mUniqueObjectId << "\n";
+	ss << indent << "mTimeStamp: " << mTimeStamp << "\n";
+	ss << indent << "mIsDeleted: " << mIsDeleted << "\n";
+
+	string ret = ss.str();
+	return ret;
+}
+
+//void EmapiProteusRefDataMessage::copy(const EmapiProteusRefDataMessage & pObject )
+//{
+//	if (this == &pObject)
+//		return;	
+//}
+
+const int EmapiProteusRefDataMessage::getMessageType() const
+{
+	return EmapiMessageType_EmapiProteusRefDataMessage;
+}
+
+
+//void EmapiProteusRefDataMessage::traceMessage(MessageTrace *pTrace, int pLevel) const
+//{
+//}
+
+
+void EmapiProteusRefDataMessage::unpack(TagwireDecoder& pDecoder)
+{
+	while( pDecoder.hasMoreTags()) {
+		int tTag = pDecoder.getNextTag();
+		switch(tTag) {
+		case 1:
+			pDecoder.readString(mKey);
+			break;
+		case 2:
+			pDecoder.readString(mCacheId);
+			break;
+		case 3:
+			pDecoder.readInteger( mAction );
+			mAction = copyAttribute( mAction );
+			break;
+		case 4:
+			pDecoder.readLong(mStateSequenceNumber);
+			break;
+		case 5:
+			pDecoder.readString(mUniqueObjectId);
+			break;
+
+		case 6:
+			pDecoder.readString(mTimeStamp);
+			break;
+		case 7:
+			pDecoder.readBoolean(mIsDeleted);
+			mIsDeleted = copyAttribute( mIsDeleted );
+			break;
+		default:
+			pDecoder.skipUnknownTag();
+			break;
+		}
+	}
+}
+
+void EmapiProteusRefDataMessage::pack(TagwireEncoder& pEncoder) const
+{
+	pEncoder.beginGroup();
+	pEncoder.appendString(1, mKey);
+	pEncoder.appendString(2, mCacheId);
+	pEncoder.appendInteger(3, mAction);
+	pEncoder.appendLong(4, mStateSequenceNumber);
+	pEncoder.appendString(5, mUniqueObjectId);
+	pEncoder.appendString(6, mTimeStamp);
+	pEncoder.appendBoolean(7, mIsDeleted);
+	pEncoder.endGroup();
+}
+
+const int EmapiProteusRefDataMessage::getClassId() const
+{
+	return 236;
+}
+
+const string EmapiProteusRefDataMessage::getMessageName() const
+{
+	return "EmapiProteusRefDataMessage";
+}
+
 
 /* -------------------------------------------------
  */
