@@ -14,6 +14,18 @@
 #include <arpa/inet.h>
 #include <stdbool.h>
 #include <limits.h>
+#include <sstream>
+
+#include "EmapiTagwireWrapper.h"
+
+
+using namespace emapi;
+using std::string;
+using std::stringstream;
+using std::cout;
+
+EmapiTagwireWrapper tpl_req;
+
 
 #define DEFAULT_HOST    "127.0.0.1"
 #define DEFAULT_LISTEN_PORT   6565
@@ -94,6 +106,23 @@ void connect_to_relay_target()
 	set_blocking(g_relay_sock_fd, false);
 }
 
+void print_twstring(char * s) 
+{
+	try {
+	string tpl_str{s};
+	TagwireDecoder decoder{ (const unsigned char *)tpl_str.c_str(),
+				0,(unsigned int) tpl_str.size()};  
+
+	cout << "got tagwire string : \"" << tpl_str << "\"\n";
+	tpl_req.unpack(decoder);
+	cout << "unpacked:\n" << tpl_req.to_string("");
+	} catch ( std::exception e )
+	{
+		printf("Tagwire Decode failed\n");
+	}
+}
+
+
 /*
  * epoll echo server
  */
@@ -130,9 +159,9 @@ void server_run()
 
 	socklen = sizeof(cli_addr);
 	for (;;) {
-		//printf("[+] before epoll_wait\n");
+		printf("[+] before epoll_wait\n");
 		nfds = epoll_wait(epfd, events, MAX_EVENTS, -1);
-		//printf("[+] after epoll_wait\n");
+		printf("[+] after epoll_wait\n");
 		for ( i = 0 ; i < nfds; i++ ) {
 			//printf("[+] processing %d of <%d\n",i,nfds);
 			if (events[i].data.fd == listen_sock) {
@@ -153,16 +182,28 @@ void server_run()
 			} else if (events[i].events & EPOLLIN) {
 				/* handle EPOLLIN event */
 				int read_from_fd = events[i].data.fd;
+
+				printf("read : start of message\n");
+
+				char copy_recv_buffer[MAX_LINE+1];
+				memset( copy_recv_buffer, 0 , MAX_LINE+1 );
+				char * p = copy_recv_buffer;
+	
 				for (;;) {
 					bzero(read_buf, sizeof(read_buf));
-					//printf("[+] before read fd %d\n", read_from_fd);
+					printf("[+] before read fd %d\n", read_from_fd);
 					int remaining = read(read_from_fd, read_buf, sizeof(read_buf));
-					//printf("[+] read returned : %d [%.*s]\n", remaining, remaining, read_buf);
+					printf("[+] read returned : %d [%.*s]\n", remaining, remaining, read_buf);
 
 					if ( remaining <= 0 /* || errno == EAGAIN */ ) {
+						printf("read : end of message\n");
 						break;
 					} else {
 						int write_to_fd = 0;
+						// copy read in bytes to the tagwire buffer:
+						memcpy( p, read_buf, remaining);
+						p+= remaining;
+
 						// if in relay mode, write to the 'other' socket
 						if( g_relay ) {
 							if( events[i].data.fd ==  g_relay_sock_fd ) {
@@ -178,9 +219,9 @@ void server_run()
 						}
 						char * p = read_buf;
 						while( remaining > 0 ) {
-							//printf("[+] before write [%.*s] fd %d (remaining = %d)\n", remaining,  p, write_to_fd, remaining);
+							printf("[+] before write [%.*s] fd %d (remaining = %d)\n", remaining,  p, write_to_fd, remaining);
 							n = write(write_to_fd, p, remaining );
-							//printf("[+] after write fd %d (wrote %d)\n", write_to_fd, n);
+							printf("[+] after write fd %d (wrote %d)\n", write_to_fd, n);
 							if( n > 0 ) {
 								p += n;
 								remaining -= n;
@@ -188,6 +229,9 @@ void server_run()
 						}
 	
 					}
+					*p=0; // add null terminator
+					printf("recv message:\"%s\"\n",copy_recv_buffer);
+					print_twstring( copy_recv_buffer ); 
 				}
 			} else {
 				printf("[+] unexpected\n");

@@ -47,6 +47,7 @@ struct timespec g_send_wait;
 
 void print_twstring(char * s) 
 {
+	try {
 	string tpl_str{s};
 	TagwireDecoder decoder{ (const unsigned char *)tpl_str.c_str(),
 				0,(unsigned int) tpl_str.size()};  
@@ -54,6 +55,10 @@ void print_twstring(char * s)
 	cout << "got tagwire string : \"" << tpl_str << "\"\n";
 	tpl_req.unpack(decoder);
 	cout << "unpacked:\n" << tpl_req.to_string("");
+	} catch ( std::exception e )
+	{
+		printf("Tagwire Decode failed\n");
+	}
 }
 
 

@@ -21,7 +21,7 @@ add_executable(tagwire_harness
  )
 
 add_executable(thailand_sim 
-  thailand_sim.c
+  thailand_sim.cpp
   TagwireDecoder.cpp
   TagwireEncoder.cpp
   EmapiTagwireWrapper.cpp
