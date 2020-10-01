@@ -112,6 +112,9 @@ void print_menu_options()
 	printf("options:\n*1 send taxprelogonreq\n");
 	printf("options:\n*2 send taxconnnectorentry\n");
 	printf("options:\n*3 send taxprelogonrsp\n");
+	printf("options:\n*4 send abstractmeevent\n");
+	printf("options:\n*5 send proteusrefdatamessage\n");
+
 }
 
 void client_run()
@@ -145,6 +148,8 @@ void client_run()
 		char copy_recv_buffer[MAX_LINE+1];
 		char send_buffer[MAX_LINE+1];
 
+		char msg_abstractmeevent[]="238=[1=1|2=2|3=timeofevent|4=T]";
+		char msg_proteusrefdatamessage[]="236=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=F]";
 		char msg_taxprelogonreq[]="66=[1=T|2=member|3=user|4=1|5=2|6=3]";
 		char msg_taxconnectorentry[]="68=[1=1|2=ipaddress|3=3|4=[4|4]|5=[5|5]]";
 		char msg_taxprelogonrsp[]="64=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=address|7=7|8=8|"
@@ -170,7 +175,10 @@ void client_run()
 					//c = strlen( send_buffer );
 				} else if ( buf[1]=='3' ) {
 					strcpy( send_buffer, msg_taxprelogonrsp );
-					//c = strlen( send_buffer );
+				} else if ( buf[1]=='4' ) {
+					strcpy( send_buffer,msg_abstractmeevent  );
+				} else if ( buf[1]=='5' ) {
+					strcpy( send_buffer, msg_proteusrefdatamessage );
 				} else {
 					printf("unrecognised option\n");
 					print_menu_options();
