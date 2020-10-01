@@ -183,7 +183,7 @@ void server_run()
 				/* handle EPOLLIN event */
 				int read_from_fd = events[i].data.fd;
 
-				printf("read : start of message\n");
+				//printf("read : start of message\n");
 
 				char copy_recv_buffer[MAX_LINE+1];
 				memset( copy_recv_buffer, 0 , MAX_LINE+1 );
@@ -191,12 +191,12 @@ void server_run()
 	
 				for (;;) {
 					bzero(read_buf, sizeof(read_buf));
-					printf("[+] before read fd %d\n", read_from_fd);
+					//printf("[+] before read fd %d\n", read_from_fd);
 					int remaining = read(read_from_fd, read_buf, sizeof(read_buf));
-					printf("[+] read returned : %d [%.*s]\n", remaining, remaining, read_buf);
+					//printf("[+] read returned : %d [%.*s]\n", remaining, remaining, read_buf);
 
 					if ( remaining <= 0 /* || errno == EAGAIN */ ) {
-						printf("read : end of message\n");
+						//printf("read : end of message\n");
 						break;
 					} else {
 						int write_to_fd = 0;
@@ -219,9 +219,9 @@ void server_run()
 						}
 						char * p = read_buf;
 						while( remaining > 0 ) {
-							printf("[+] before write [%.*s] fd %d (remaining = %d)\n", remaining,  p, write_to_fd, remaining);
+							//printf("[+] before write [%.*s] fd %d (remaining = %d)\n", remaining,  p, write_to_fd, remaining);
 							n = write(write_to_fd, p, remaining );
-							printf("[+] after write fd %d (wrote %d)\n", write_to_fd, n);
+							//printf("[+] after write fd %d (wrote %d)\n", write_to_fd, n);
 							if( n > 0 ) {
 								p += n;
 								remaining -= n;

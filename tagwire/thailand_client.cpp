@@ -119,7 +119,9 @@ void print_menu_options()
 	printf("options:\n*3 send taxprelogonrsp\n");
 	printf("options:\n*4 send abstractmeevent\n");
 	printf("options:\n*5 send proteusrefdatamessage\n");
-
+	printf("options:\n*6 send requestmessage\n");
+	printf("options:\n*7 send simpleresponse\n");
+	printf("options:\n*8 send responsemessage\n");
 }
 
 void client_run()
@@ -159,6 +161,9 @@ void client_run()
 		char msg_taxconnectorentry[]="68=[1=1|2=ipaddress|3=3|4=[4|4]|5=[5|5]]";
 		char msg_taxprelogonrsp[]="64=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=address|7=7|8=8|"
 					  "9=[68=[1=1|2=ipaddress|3=3|4=[4|4]|5=[5|5]]|68=[1=1|2=ipaddress|3=3|4=[4|4]|5=[5|5]]]|10=messagref]";
+		char msg_requestmessage[]="237=[1=T]";
+		char msg_simpleresp[]="231=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=messagereference]";
+		char msg_responsemessage[]="230=[1=1|2=message|3=[3|3]|4=requestid|5=messagereference]";
 
 		for (;;) {
 			memset( send_buffer, 0 , MAX_LINE+1 );
@@ -184,6 +189,13 @@ void client_run()
 					strcpy( send_buffer,msg_abstractmeevent  );
 				} else if ( buf[1]=='5' ) {
 					strcpy( send_buffer, msg_proteusrefdatamessage );
+				} else if ( buf[1]=='6' ) {
+					strcpy( send_buffer, msg_requestmessage );
+				} else if ( buf[1]=='7' ) {
+					strcpy( send_buffer, msg_simpleresp );
+				} else if ( buf[1]=='8' ) {
+					strcpy( send_buffer, msg_responsemessage );
+	
 				} else {
 					printf("unrecognised option\n");
 					print_menu_options();
