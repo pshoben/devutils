@@ -857,5 +857,489 @@ const string EmapiTaxPreLogonRsp::getMessageName() const
 }
 
 
+/* -------------------------------------------------
+ */
+EmapiTaxLogonRsp::EmapiTaxLogonRsp()
+{
+	mLogonAccepted = NULL;
+	mLoginStatus = 0;
+	mIsTestSystem = NULL;
+	mSystemName = NULL;
+	mPartitionHbtInterval = NULL;
+	mClientHbtInterval = NULL;
+	mMaxLostHeartbeats =  NULL;
+	mPublicMulticastContent  = NULL;
+}
+
+EmapiTaxLogonRsp::~EmapiTaxLogonRsp()
+{
+	// TODO
+}
+
+const string EmapiTaxLogonRsp::to_string(string indent) const
+{
+	stringstream ss;
+	ss << indent << getMessageName() << ":\n";
+	ss << indent << "mLogonAccepted: " << "\n";;  //  if ( mLogonAccepted ) ss << *mLogonAccepted << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mLoginStatus: " << "\n";;  //  if ( mLoginStatus ) ss << *mLoginStatus << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mIsTestSystem: " << "\n";;  //  if ( mIsTestSystem ) ss << *mIsTestSystem << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mSystemName: " << "\n";;  //  if ( msystemName ) ss << *msystemName << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mPartitionHbtInterval: " << "\n";;  //  if ( mPartitionHbtInterval ) ss << *mPartitionHbtInterval << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mClientbtInterval: " << "\n";;  //  if ( mClientbtInterval ) ss << *mClientbtInterval << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mMaxLostHeartbeats: " << "\n";;  //  if ( mMaxLostHeartbeats ) ss << *mMaxLostHeartbeats << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mPublicMulticastContent: " << "\n";;  //  if ( mPublicMulticastContent ) ss << *mPublicMulticastContent << "\n";    else ss << string("null") << "\n" ;
+
+	string ret = ss.str();
+	return ret;
+}
+
+const int EmapiTaxLogonRsp::getMessageType() const
+{
+	return EmapiMessageType_EmapiTaxLogonRsp;
+}
+
+
+//void EmapiTaxLogonRsp::traceMessage(MessageTrace *pTrace, int pLevel) const
+//{
+//}
+
+
+void EmapiTaxLogonRsp::unpack(TagwireDecoder& pDecoder)
+{
+	while( pDecoder.hasMoreTags()) {
+		int tTag = pDecoder.getNextTag();
+		switch( tTag) {
+		case 1:
+			pDecoder.readInteger(mCode);
+			break;
+		case 2:
+			pDecoder.readString(mMessage);
+			break;
+		case 3:
+			mSubCode = pDecoder.readArrayInt32(mSubCode);
+			break;
+		case 4:
+			pDecoder.readString(mRequestId);
+			break;
+		case 5:
+			pDecoder.readString(mReply);
+			break;
+		case 6:
+			pDecoder.readBoolean(mLogonAccepted);
+			mLogonAccepted = copyAttribute(mLogonAccepted);
+			break;
+		case 7:
+			pDecoder.readInteger(mLoginStatus);
+			break;
+		case 8:
+			pDecoder.readBoolean(mIsTestSystem);
+			mIsTestSystem = copyAttribute(mIsTestSystem);
+			break;
+		case 9:
+			pDecoder.readString(mSystemName);
+			break;
+
+		case 10:
+			pDecoder.readInteger(mPartitionHbtInterval);
+			mPartitionHbtInterval = copyAttribute(mPartitionHbtInterval);
+			break;
+		case 11:
+			pDecoder.readInteger(mClientHbtInterval);
+			mClientHbtInterval = copyAttribute(mClientHbtInterval);
+			break;
+		case 12:
+			pDecoder.readInteger(mMaxLostHeartbeats);
+			mMaxLostHeartbeats = copyAttribute(mMaxLostHeartbeats);
+			break;
+		case 13:
+			pDecoder.readArray(mPublicMulticastContent);
+			break;
+		case 14:
+			pDecoder.readString(mMessageReference);
+			break;
+		default:
+			pDecoder.skipUnknownTag();
+			break;
+		}
+	}
+}
+
+void EmapiTaxLogonRsp::pack(TagwireEncoder& pEncoder) const
+{
+	pEncoder.beginGroup();
+	pEncoder.appendInteger(1, mCode);
+	pEncoder.appendString(2, mMessage);
+	pEncoder.appendArrayInt32(3, mSubCode);
+	pEncoder.appendString(4, mRequestId);
+	pEncoder.appendString(5, mReply);
+	pEncoder.appendBoolean(6, mLogonAccepted);
+	pEncoder.appendInteger(7, mLoginStatus);
+	pEncoder.appendBoolean(8, mIsTestSystem);
+	pEncoder.appendString(9, mSystemName);
+	pEncoder.appendInteger(10, mPartitionHbtInterval);
+	pEncoder.appendInteger(11, mClientHbtInterval);
+	pEncoder.appendInteger(12, mMaxLostHeartbeats);
+	pEncoder.appendArray(13, mPublicMulticastContent);
+	pEncoder.appendString(14, mMessageReference);
+	pEncoder.endGroup();
+}
+
+const int EmapiTaxLogonRsp::getClassId() const
+{
+	return 64;
+}
+
+const string EmapiTaxLogonRsp::getMessageName() const
+{
+	return "EmapiTaxLogonRsp";
+}
+
+
+/* -------------------------------------------------
+ */
+EmapiPublicMulticastContent::EmapiPublicMulticastContent()
+{
+	mPmcContentId = NULL;
+	mFlowIdList = NULL;
+	mSubscriptionGroupList = NULL;
+	mPublicMulticastPartitions = NULL;
+}
+
+EmapiPublicMulticastContent::~EmapiPublicMulticastContent()
+{
+}
+
+const string EmapiPublicMulticastContent::to_string(string indent) const
+{
+	stringstream ss;
+	ss << indent << getMessageName() << ":\n";
+
+	string ret = ss.str();
+	return ret;
+}
+
+const int EmapiPublicMulticastContent::getMessageType() const
+{
+	return EmapiMessageType_EmapiPublicMulticastContent;
+}
+
+
+//void EmapiPublicMulticastContent::traceMessage(MessageTrace *pTrace, int pLevel) const
+//{
+//}
+
+
+void EmapiPublicMulticastContent::unpack(TagwireDecoder& pDecoder)
+{
+
+	while( pDecoder.hasMoreTags()) {
+		int tTag = pDecoder.getNextTag();
+		switch( tTag) {
+		case 1:
+			pDecoder.readString(mKey);
+			break;
+		case 2:
+			pDecoder.readString(mCacheId);
+			break;
+		case 3:
+			pDecoder.readInteger(mAction);
+			mAction = copyAttribute(mAction);
+			break;
+		case 4:
+			pDecoder.readLong(mStateSequenceNumber);
+			break;
+
+		case 5:
+			pDecoder.readString(mUniqueObjectId);
+			break;
+		case 6:
+			pDecoder.readString(mTimeStamp);
+			break;
+		case 7:
+			pDecoder.readString(mPmcContentId);
+			break;
+		case 8:
+			pDecoder.readString(mFlowIdList);
+			break;
+		case 9:
+			pDecoder.readString(mSubscriptionGroupList);
+			break;
+		case 10:
+			pDecoder.readArray(mPublicMulticastPartitions);
+			break;
+		case 11:
+			pDecoder.readBoolean(mIsDeleted);
+			mIsDeleted = copyAttribute( mIsDeleted );
+			break;
+		default:
+			pDecoder.skipUnknownTag();
+			break;
+		}
+	}
+}
+
+void EmapiPublicMulticastContent::pack(TagwireEncoder& pEncoder) const
+{
+	pEncoder.appendString(1, mKey);
+	pEncoder.appendString(2, mCacheId);
+	pEncoder.appendInteger(3, mAction);
+	pEncoder.appendLong(4, mStateSequenceNumber);
+
+	pEncoder.appendString(5, mUniqueObjectId);
+	pEncoder.appendString(6, mTimeStamp);
+	pEncoder.appendString(7, mPmcContentId);
+	pEncoder.appendString(8, mFlowIdList);
+	pEncoder.appendString(9, mSubscriptionGroupList);
+	pEncoder.appendArray(10, mPublicMulticastPartitions);
+	pEncoder.appendBoolean(11, mIsDeleted);
+	pEncoder.endGroup();
+}
+
+const int EmapiPublicMulticastContent::getClassId() const
+{
+	return 108;
+}
+
+const string EmapiPublicMulticastContent::getMessageName() const
+{
+	return "EmapiPublicMulticastContent";
+}
+/* -------------------------------------------------
+ */
+EmapiPublicMulticastPartition::EmapiPublicMulticastPartition()
+{
+	mPmcPartitionId = NULL;
+	mPayloadContentType = NULL;
+	mTimeToLive = NULL;
+	mBundleSize = NULL;
+	mHeartbeatInterval = NULL;
+	mPmcContentId = NULL;
+	mPublicMulticastAddresses = NULL;
+}
+
+EmapiPublicMulticastPartition::~EmapiPublicMulticastPartition()
+{
+}
+
+const string EmapiPublicMulticastPartition::to_string(string indent) const
+{
+	stringstream ss;
+	ss << indent << getMessageName() << ":\n";
+
+	string ret = ss.str();
+	return ret;
+}
+
+const int EmapiPublicMulticastPartition::getMessageType() const
+{
+	return EmapiMessageType_EmapiPublicMulticastPartition;
+}
+
+
+//void EmapiPublicMulticastPartition::traceMessage(MessageTrace *pTrace, int pLevel) const
+//{
+//}
+
+
+void EmapiPublicMulticastPartition::unpack(TagwireDecoder& pDecoder)
+{
+
+	while( pDecoder.hasMoreTags()) {
+		int tTag = pDecoder.getNextTag();
+		switch( tTag) {
+		case 1:
+			pDecoder.readString(mKey);
+			break;
+		case 2:
+			pDecoder.readString(mCacheId);
+			break;
+		case 3:
+			pDecoder.readInteger(mAction);
+			mAction = copyAttribute(mAction);
+			break;
+		case 4:
+			pDecoder.readLong(mStateSequenceNumber);
+			break;
+
+		case 5:
+			pDecoder.readString(mUniqueObjectId);
+			break;
+		case 6:
+			pDecoder.readString(mTimeStamp);
+			break;
+		case 7:
+			pDecoder.readString(mPmcPartitionId);
+			break;
+		case 8:
+			pDecoder.readString(mPayloadContentType);
+			break;
+		case 10:
+			pDecoder.readInteger(mTimeToLive);
+			mTimeToLive = copyAttribute(mTimeToLive);
+			break;
+		case 11:
+			pDecoder.readInteger(mBundleSize);
+			mBundleSize = copyAttribute(mBundleSize);
+			break;
+		case 12:
+			pDecoder.readInteger(mHeartbeatInterval);
+			mHeartbeatInterval = copyAttribute(mHeartbeatInterval);
+			break;
+		case 13:
+			pDecoder.readString(mPmcContentId);
+			break;
+		case 14:
+			pDecoder.readArray(mPublicMulticastAddresses);
+			break;
+		case 15:
+			pDecoder.readBoolean(mIsDeleted);
+			mIsDeleted = copyAttribute( mIsDeleted );
+			break;
+		default:
+			pDecoder.skipUnknownTag();
+			break;
+		}
+	}
+}
+
+void EmapiPublicMulticastPartition::pack(TagwireEncoder& pEncoder) const
+{
+	pEncoder.appendString(1, mKey);
+	pEncoder.appendString(2, mCacheId);
+	pEncoder.appendInteger(3, mAction);
+	pEncoder.appendLong(4, mStateSequenceNumber);
+	pEncoder.appendString(5, mUniqueObjectId);
+	pEncoder.appendString(6, mTimeStamp);
+	pEncoder.appendString(7, mPmcPartitionId);
+	pEncoder.appendString(8, mPayloadContentType);
+	pEncoder.appendInteger(10, mTimeToLive);
+	pEncoder.appendInteger(11, mBundleSize);
+	pEncoder.appendInteger(12, mHeartbeatInterval);
+	pEncoder.appendString(13, mPmcContentId);
+	pEncoder.appendArray(14, mPublicMulticastAddresses);
+	pEncoder.appendBoolean(15, mIsDeleted);
+	pEncoder.endGroup();
+}
+
+const int EmapiPublicMulticastPartition::getClassId() const
+{
+	return 109;
+}
+
+const string EmapiPublicMulticastPartition::getMessageName() const
+{
+	return "EmapiPublicMulticastPartition";
+}
+
+/* -------------------------------------------------
+ */
+EmapiPublicMulticastAddress::EmapiPublicMulticastAddress()
+{
+	mPmcAddress = NULL;
+	mPmcPort = NULL;
+	mPmcSourceAddress = NULL;
+	mPmcPartitionId = NULL;
+}
+
+EmapiPublicMulticastAddress::~EmapiPublicMulticastAddress()
+{
+}
+
+const string EmapiPublicMulticastAddress::to_string(string indent) const
+{
+	stringstream ss;
+	ss << indent << getMessageName() << ":\n";
+
+	string ret = ss.str();
+	return ret;
+}
+
+const int EmapiPublicMulticastAddress::getMessageType() const
+{
+	return EmapiMessageType_EmapiPublicMulticastAddress;
+}
+
+
+//void EmapiPublicMulticastAddress::traceMessage(MessageTrace *pTrace, int pLevel) const
+//{
+//}
+
+
+void EmapiPublicMulticastAddress::unpack(TagwireDecoder& pDecoder)
+{
+	while( pDecoder.hasMoreTags()) {
+		int tTag = pDecoder.getNextTag();
+		switch( tTag) {
+		case 1:
+			pDecoder.readString(mKey);
+			break;
+		case 2:
+			pDecoder.readString(mCacheId);
+			break;
+		case 3:
+			pDecoder.readInteger(mAction);
+			mAction = copyAttribute(mAction);
+			break;
+		case 4:
+			pDecoder.readLong(mStateSequenceNumber);
+			break;
+
+		case 5:
+			pDecoder.readString(mUniqueObjectId);
+			break;
+		case 6:
+			pDecoder.readString(mTimeStamp);
+			break;
+		case 7:
+			pDecoder.readString(mPmcAddress);
+			break;
+		case 8:
+			pDecoder.readInteger(mPmcPort);
+			mPmcPort = copyAttribute(mPmcPort);
+			break;
+		case 9:
+			pDecoder.readString(mPmcSourceAddress);
+			break;
+		case 10:
+			pDecoder.readString(mPmcPartitionId);
+			break;
+		case 11:
+			pDecoder.readBoolean(mIsDeleted);
+			mIsDeleted = copyAttribute( mIsDeleted );
+			break;
+		default:
+			pDecoder.skipUnknownTag();
+			break;
+		}
+	}
+}
+
+void EmapiPublicMulticastAddress::pack(TagwireEncoder& pEncoder) const
+{
+	pEncoder.appendString(1, mKey);
+	pEncoder.appendString(2, mCacheId);
+	pEncoder.appendInteger(3, mAction);
+	pEncoder.appendLong(4, mStateSequenceNumber);
+	pEncoder.appendString(5, mUniqueObjectId);
+	pEncoder.appendString(6, mTimeStamp);
+	pEncoder.appendString(7, mPmcAddress);
+	pEncoder.appendInteger(8, mPmcPort);
+	pEncoder.appendString(10, mPmcSourceAddress);
+	pEncoder.appendString(11, mPmcPartitionId);
+	pEncoder.appendBoolean(15, mIsDeleted);
+	pEncoder.endGroup();
+}
+
+const int EmapiPublicMulticastAddress::getClassId() const
+{
+	return 110;
+}
+
+const string EmapiPublicMulticastAddress::getMessageName() const
+{
+	return "EmapiPublicMulticastAddress";
+}
+
+
 }
 

@@ -35,7 +35,7 @@ EmapiTagwireWrapper tpl_req;
 //#define MAX_CONN        16
 //#define MAX_EVENTS      32
 //#define BUF_SIZE        16
-#define MAX_LINE        256
+#define MAX_LINE        512
 
 bool g_interactive = true;
 
@@ -122,6 +122,11 @@ void print_menu_options()
 	printf("options:\n*6 send requestmessage\n");
 	printf("options:\n*7 send simpleresponse\n");
 	printf("options:\n*8 send responsemessage\n");
+	printf("options:\n*9 send msg_publicmulticastaddress\n");
+	printf("options:\n*a send msg_publicmulticastpartition\n");
+	printf("options:\n*b send msg_publicmulticastcontent\n");
+	printf("options:\n*c send msg_taxlogonreq\n");
+	printf("options:\n*d send msg_taxlogonrsp\n");
 }
 
 void client_run()
@@ -158,13 +163,32 @@ void client_run()
 		char msg_abstractmeevent[]="238=[1=1|2=2|3=timeofevent|4=T]";
 		char msg_proteusrefdatamessage[]="236=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=F]";
 		char msg_taxprelogonreq[]="66=[1=T|2=member|3=user|4=1|5=2|6=3]";
-		char msg_taxconnectorentry[]="68=[1=1|2=ipaddress|3=3|4=[4|4]|5=[5|5]]";
-		char msg_taxprelogonrsp[]="64=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=address|7=7|8=8|"
-					  "9=[68=[1=1|2=ipaddress|3=3|4=[4|4]|5=[5|5]]|68=[1=1|2=ipaddress|3=3|4=[4|4]|5=[5|5]]]|10=messagref]";
+		
+		string msg_taxconnectorentry= "68=[1=1|2=ipaddress|3=3|4=[4|4]|5=[5|5]]";
+		string tce = msg_taxconnectorentry;
+
+		string msg_taxprelogonrsp="64=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=address|7=7|8=8|"
+					  "9=[" + tce + "|" + tce + "]|10=messagref]";
 		char msg_requestmessage[]="237=[1=T]";
 		char msg_simpleresp[]="231=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=messagereference]";
 		char msg_responsemessage[]="230=[1=1|2=message|3=[3|3]|4=requestid|5=messagereference]";
 
+		string msg_publicmulticastaddress = "110=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmcaddress|8=8"
+						"9=pmcsourceaddress|10=pmcpartitionid|11=F";
+		string pma = msg_publicmulticastaddress;
+
+		string msg_publicmulticastpartition = "109=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmcpartitionid|8=payloadcontenttype"
+						"|10=10|11=11|12=12|13=pmccontentid|14=[" + pma + "]|[" + pma + "]|15=F";
+		string pmp = msg_publicmulticastpartition;
+
+		string msg_publicmulticastcontent = "108=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmccontentid|8=flowidlist"
+						"|9=subscriptiongrouplist|10=[" + pmp + "]|[" + pmp + "]|11=F]";
+		string pmc = msg_publicmulticastcontent;
+
+		string msg_taxlogonreq="63=[1=T|2=member|3=user|4=password|5=5|6=6|7=7|8=8|9=9]";
+		string msg_taxlogonrsp="64=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=T|7=7|8=T|"
+					  "9=systemname|10=10|11=11|12=12|13=[" + pmc + "]|[" + pmc + "]|14=messagref]";
+	
 		for (;;) {
 			memset( send_buffer, 0 , MAX_LINE+1 );
 			memset( copy_recv_buffer, 0 , MAX_LINE+1 );
@@ -181,12 +205,12 @@ void client_run()
 					strcpy( send_buffer, msg_taxprelogonreq );
 					//c = strlen( send_buffer );
 				} else if ( buf[1]=='2' ) {
-					strcpy( send_buffer, msg_taxconnectorentry );
+					strcpy( send_buffer, msg_taxconnectorentry.c_str());
 					//c = strlen( send_buffer );
 				} else if ( buf[1]=='3' ) {
-					strcpy( send_buffer, msg_taxprelogonrsp );
+					strcpy( send_buffer, msg_taxprelogonrsp.c_str());
 				} else if ( buf[1]=='4' ) {
-					strcpy( send_buffer,msg_abstractmeevent  );
+					strcpy( send_buffer,msg_abstractmeevent );
 				} else if ( buf[1]=='5' ) {
 					strcpy( send_buffer, msg_proteusrefdatamessage );
 				} else if ( buf[1]=='6' ) {
@@ -195,7 +219,16 @@ void client_run()
 					strcpy( send_buffer, msg_simpleresp );
 				} else if ( buf[1]=='8' ) {
 					strcpy( send_buffer, msg_responsemessage );
-	
+				} else if ( buf[1]=='9' ) {
+					strcpy( send_buffer, msg_publicmulticastaddress.c_str());
+				} else if ( buf[1]=='a' ) {
+					strcpy( send_buffer, msg_publicmulticastpartition.c_str());
+				} else if ( buf[1]=='b' ) {
+					strcpy( send_buffer, msg_publicmulticastcontent.c_str());
+				} else if ( buf[1]=='c' ) {
+					strcpy( send_buffer, msg_taxlogonreq.c_str());
+				} else if ( buf[1]=='d' ) {
+					strcpy( send_buffer, msg_taxlogonrsp.c_str());
 				} else {
 					printf("unrecognised option\n");
 					print_menu_options();

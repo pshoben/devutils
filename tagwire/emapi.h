@@ -54,9 +54,9 @@ namespace emapi
 	static const int EmapiMessageType_EmapiTaxLogonReq = 63;
 	static const int EmapiMessageType_EmapiTaxLogonRsp = 64;
 
-	static const int EmapiMessageType_EmapiPublicMulitcastAddress = 110;
-	static const int EmapiMessageType_EmapiPublicMulitcastContent = 108;
-	static const int EmapiMessageType_EmapiPublicMulitcastPartition = 109;
+	static const int EmapiMessageType_EmapiPublicMulticastAddress = 110;
+	static const int EmapiMessageType_EmapiPublicMulticastContent = 108;
+	static const int EmapiMessageType_EmapiPublicMulticastPartition = 109;
 
 	static const int EmapiMessageType_EmapiRequestMessage = 237;
 	static const int EmapiMessageType_EmapiResponseMessage = 230;
@@ -378,7 +378,7 @@ class EmapiPublicMulticastContent : public EmapiProteusRefDataMessage
 public:
 	string * mPmcContentId;
 	string * mFlowIdList;
-	string * mSubscriprionGroupList;
+	string * mSubscriptionGroupList;
 	vector<const EmapiPublicMulticastPartition *> *mPublicMulticastPartitions;
 	
 	//void copy(const EmapiPublicMulticastContent &pObject);:0
@@ -410,7 +410,8 @@ public:
 	bool * mIsTestSystem;
 	string * mSystemName;
 	int32 * mPartitionHbtInterval;
-	int64 * mMaxLostHeartbeats;
+	int32 * mClientHbtInterval;
+	int32 * mMaxLostHeartbeats;
 	vector<const EmapiPublicMulticastContent *> *mPublicMulticastContent;
 	
 	//void copy(const EmapiTaxLogonRsp &pObject);:0
