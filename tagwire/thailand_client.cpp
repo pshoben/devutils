@@ -17,6 +17,7 @@
 #include <fcntl.h>
 #include "emapi.h"
 #include <sstream>
+#include <cstring>
 
 #include "EmapiTagwireWrapper.h"
 
@@ -42,7 +43,7 @@ bool g_interactive = true;
 unsigned short g_port= DEFAULT_PORT;
 char g_host[HOST_NAME_MAX]=DEFAULT_HOST;
 char g_send_string[MAX_LINE-1]="test send";
-int g_send_repeats = -1 ; // default -1 = send forever
+int g_send_repeats = 1 ; // default -1 = send once
 struct timespec g_send_wait;
 
 void print_twstring(char * s) 
@@ -154,41 +155,40 @@ void client_run()
 	//}
 	printf("connected\n");
 
+	char msg_abstractmeevent[]="238=[1=1|2=2|3=timeofevent|4=T]";
+	char msg_proteusrefdatamessage[]="236=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=F]";
+	char msg_taxprelogonreq[]="66=[1=T|2=member|3=user|4=1|5=2|6=3]";
+	
+	string msg_taxconnectorentry= "68=[1=1|2=ipaddress|3=3|4=[4|4]|5=[5|5]]";
+	string tce = msg_taxconnectorentry;
+
+	string msg_taxprelogonrsp="64=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=address|7=7|8=8|"
+				  "9=[" + tce + "|" + tce + "]|10=messagref]";
+	char msg_requestmessage[]="237=[1=T]";
+	char msg_simpleresp[]="231=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=messagereference]";
+	char msg_responsemessage[]="230=[1=1|2=message|3=[3|3]|4=requestid|5=messagereference]";
+
+	string msg_publicmulticastaddress = "110=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmcaddress|8=8"
+					"9=pmcsourceaddress|10=pmcpartitionid|11=F";
+	string pma = msg_publicmulticastaddress;
+
+	string msg_publicmulticastpartition = "109=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmcpartitionid|8=payloadcontenttype"
+					"|10=10|11=11|12=12|13=pmccontentid|14=[" + pma + "]|[" + pma + "]|15=F";
+	string pmp = msg_publicmulticastpartition;
+
+	string msg_publicmulticastcontent = "108=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmccontentid|8=flowidlist"
+					"|9=subscriptiongrouplist|10=[" + pmp + "]|[" + pmp + "]|11=F]";
+	string pmc = msg_publicmulticastcontent;
+
+	string msg_taxlogonreq="63=[1=T|2=member|3=user|4=password|5=5|6=6|7=7|8=8|9=9]";
+	string msg_taxlogonrsp="64=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=T|7=7|8=T|"
+					  "9=systemname|10=10|11=11|12=12|13=[" + pmc + "]|[" + pmc + "]|14=messagref]";
+	
 	if( g_interactive ) {
 		printf("Interactive mode.\n"
 			"Enter q[+newline] to quit\n");
 		char copy_recv_buffer[MAX_LINE+1];
 		char send_buffer[MAX_LINE+1];
-
-		char msg_abstractmeevent[]="238=[1=1|2=2|3=timeofevent|4=T]";
-		char msg_proteusrefdatamessage[]="236=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=F]";
-		char msg_taxprelogonreq[]="66=[1=T|2=member|3=user|4=1|5=2|6=3]";
-		
-		string msg_taxconnectorentry= "68=[1=1|2=ipaddress|3=3|4=[4|4]|5=[5|5]]";
-		string tce = msg_taxconnectorentry;
-
-		string msg_taxprelogonrsp="64=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=address|7=7|8=8|"
-					  "9=[" + tce + "|" + tce + "]|10=messagref]";
-		char msg_requestmessage[]="237=[1=T]";
-		char msg_simpleresp[]="231=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=messagereference]";
-		char msg_responsemessage[]="230=[1=1|2=message|3=[3|3]|4=requestid|5=messagereference]";
-
-		string msg_publicmulticastaddress = "110=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmcaddress|8=8"
-						"9=pmcsourceaddress|10=pmcpartitionid|11=F";
-		string pma = msg_publicmulticastaddress;
-
-		string msg_publicmulticastpartition = "109=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmcpartitionid|8=payloadcontenttype"
-						"|10=10|11=11|12=12|13=pmccontentid|14=[" + pma + "]|[" + pma + "]|15=F";
-		string pmp = msg_publicmulticastpartition;
-
-		string msg_publicmulticastcontent = "108=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmccontentid|8=flowidlist"
-						"|9=subscriptiongrouplist|10=[" + pmp + "]|[" + pmp + "]|11=F]";
-		string pmc = msg_publicmulticastcontent;
-
-		string msg_taxlogonreq="63=[1=T|2=member|3=user|4=password|5=5|6=6|7=7|8=8|9=9]";
-		string msg_taxlogonrsp="64=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=T|7=7|8=T|"
-					  "9=systemname|10=10|11=11|12=12|13=[" + pmc + "]|[" + pmc + "]|14=messagref]";
-	
 		for (;;) {
 			memset( send_buffer, 0 , MAX_LINE+1 );
 			memset( copy_recv_buffer, 0 , MAX_LINE+1 );
@@ -241,6 +241,7 @@ void client_run()
 			}
 
 			printf("sending message: \"%s\"\n", send_buffer );
+			print_twstring( send_buffer ); 
 			write(sockfd, send_buffer, strlen(send_buffer) + 1);
 
 			int countdown = 1000;
@@ -266,26 +267,71 @@ void client_run()
 
 		}
 	} else {
-		int sent_count = 0 ;
-		while( g_send_repeats == -1 || sent_count < g_send_repeats ) {
-			strncpy(buf, g_send_string, sizeof(buf)-1);
-			c = strlen(buf) - 1;
-			write(sockfd, buf, c + 1);
-			while (errno != EAGAIN && (n = read(sockfd, buf, sizeof(buf))) > 0) {
+		const char * send_array[17];	
+		int i=0;
+		send_array[i++]=msg_abstractmeevent;
+		send_array[i++]=msg_proteusrefdatamessage;
+		send_array[i++]=msg_taxprelogonreq;
+		send_array[i++]= msg_requestmessage;
+		send_array[i++]= msg_simpleresp;
+		send_array[i++]= msg_responsemessage;
+
+		send_array[i++]= msg_taxconnectorentry.c_str();
+		//send_array[i++]= msg_taxconnectorentry.c_str();
+		send_array[i++]= msg_publicmulticastaddress.c_str();
+		//send_array[i++]= msg_publicmulticastaddress.c_str();
+		send_array[i++]= msg_publicmulticastpartition.c_str();
+		//send_array[i++]= msg_publicmulticastpartition.c_str();
+		send_array[i++]= msg_publicmulticastcontent.c_str();
+		//send_array[i++]= msg_publicmulticastcontent.c_str();
+		send_array[i++]= msg_taxlogonreq.c_str();
+		send_array[i++]= msg_taxlogonrsp.c_str();
+		send_array[i++]= msg_taxprelogonrsp.c_str();
+
+		int last_index = 2; // i;	
+		char copy_recv_buffer[MAX_LINE+1];
+
+		for( i = 0 ; i <= last_index ; i++ ) {
+			strcpy( g_send_string, send_array[i]);
+			int sent_count = 0 ;
+			while( g_send_repeats == -1 || sent_count < g_send_repeats ) {
+	
+				print_twstring( g_send_string ); 
+				printf("sending message: \"%s\"\n", g_send_string );
+	
+				strncpy(buf, g_send_string, sizeof(buf)-1);
+				c = strlen(buf) - 1;
+				write(sockfd, buf, c + 1);
+	
+				memset( copy_recv_buffer, 0 , MAX_LINE+1 );
+				char * p = copy_recv_buffer;
+		
+				int countdown = 1000;
 				bzero(buf, sizeof(buf));
-				c -= n;
-				if (c <= 0) {
-					break;
-				}
+				do {	
+				       	n = read(sockfd, buf, sizeof(buf));
+					if(n>1) {	
+						printf("recv %d bytes: %s\n", n, buf);
+	
+						memcpy( p, buf, n);
+						p+= n;
+						bzero(buf, sizeof(buf));
+					}
+					usleep(1000);
+					//c -= n;
+					//if (c <= 0) {
+				//		break;
+					//}
+				} while( errno == EWOULDBLOCK && ( n<1 ) && countdown-->0 );
+				*p=0; // add null terminator
+				printf("recv message:\"%s\"\n",copy_recv_buffer);
+				print_twstring( copy_recv_buffer ); 
+				nanosleep( &g_send_wait, 0 );
+				sent_count++;
 			}
-			if( n<0 && errno != EAGAIN ) {
-				// lost connection
-				perror("write");
-				exit(1);
-			}
-			nanosleep( &g_send_wait, 0 );
-			sent_count++;
 		}
+		printf("exiting batch mode ... ok\n");
+
 	}
 	close(sockfd);
 }
@@ -299,8 +345,11 @@ int main(int argc, char *argv[])
 	g_send_wait.tv_nsec=999999999;
 	
 	int opt;
-	while ((opt = getopt(argc, argv, "ih:p:s:r:w:")) != -1) {
+	while ((opt = getopt(argc, argv, "bih:p:s:r:w:")) != -1) {
 		switch (opt) {
+		case 'b':
+			g_interactive = false;
+			break;
 		case 'i':
 			g_interactive = true;
 			break;

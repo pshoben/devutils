@@ -5,6 +5,9 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <cstdio>
+
+#define LLL printf("%s : %s:%d\n", __FUNCTION__, __FILE__, __LINE__ );
 
 using std::string;
 using std::vector;
@@ -50,7 +53,6 @@ MessageDataIf* TagwireDecoder::parseMessage() noexcept(false) // throw (ParseExc
 	ensureCapacity(1);
 	if (mBuffer[mIndex++]!='=') 
 		throw ParseException("expecting =");
-	
 	MessageDataIf* tMsg = emapi::getMessageClass(tTag);
 	if(tMsg==NULL) 
 		throw ParseException("Emapi::getMessageClass failed");
@@ -58,7 +60,7 @@ MessageDataIf* TagwireDecoder::parseMessage() noexcept(false) // throw (ParseExc
 	ensureCapacity(1);
 	if (mBuffer[mIndex++]!='[') 
 		throw ParseException("expecting [");
-	
+
 	tMsg->unpack(*this);
 	ensureCapacity(1);			
 	if (mBuffer[mIndex]=='\"')
@@ -69,7 +71,6 @@ MessageDataIf* TagwireDecoder::parseMessage() noexcept(false) // throw (ParseExc
 	
 	if (mIndex!=mEndIndex) 
 		throw ParseException("mIndex!=mEndIndex");
-	
 	return tMsg;
 }
 		

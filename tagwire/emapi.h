@@ -16,6 +16,7 @@
 using std::string;
 using std::vector;
 
+#define LLL printf("%s : %s:%d\n", __FUNCTION__, __FILE__, __LINE__ );
 
 namespace emapi
 {
@@ -549,7 +550,7 @@ class EmapiTaxConnectorEntry : public MessageDataIf
 {
 public:
 
-	int32 * mIpPort;
+	int32 mIpPort;
 	string * mIpAddress;
 	int64 * mLoginTicket;
 	vector<int32> *mSessionTypes;

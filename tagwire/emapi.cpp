@@ -675,10 +675,10 @@ const string EmapiTaxConnectorEntry::to_string(string indent) const
 	stringstream ss;
 	ss << indent << getMessageName() << ":\n"
 	   << indent << "mIpPort: " << mIpPort << "\n" 
-	   << indent << "mIpAddress: ";  //  if ( mIpAddress ) ss << *mIpAddress << "\n";    else ss << string("null") << "\n" ;
-	ss << indent << "mLoginTicket: " ; //if ( mLoginTicket ) ss << *mLoginTicket << "\n" ; else ss << 0 << "\n" ;
-	ss << indent << "mSessionTypes: "; //  if ( mSessionTypes ) ss << *mSessionTypes << "\n"; else ss << 0 << "\n" ; 
-	ss << indent << "mSubscriptionGroups: "; // if ( mSubscriptionGroups ) ss << *mSubscriptionGroups << "\n"; else ss << string("null") << "\n" ;
+	   << indent << "mIpAddress: ";  if ( mIpAddress ) ss << *mIpAddress << "\n"; else ss << string("null") << "\n" ;
+	ss << indent << "mLoginTicket: ";   if ( mLoginTicket ) ss << *mLoginTicket << "\n" ; else ss << 0 << "\n" ;
+	ss << indent << "mSessionTypes: ";   if ( mSessionTypes ) { for (auto x: *mSessionTypes) ss << x << " " ; ss << "\n"; } else ss << 0 << "\n" ; 
+	ss << indent << "mSubscriptionGroups: "; if ( mSubscriptionGroups ) { for (auto x: *mSubscriptionGroups) ss << x << " " ; ss << "\n"; } else ss << 0 << "\n" ; 
 	ss << indent << "\n";
 
 	string ret = ss.str();
@@ -698,6 +698,7 @@ const int EmapiTaxConnectorEntry::getMessageType() const
 
 void EmapiTaxConnectorEntry::unpack(TagwireDecoder& pDecoder)
 {
+LLL
 	while( pDecoder.hasMoreTags()) {
 		int tTag = pDecoder.getNextTag();
 		switch( tTag) {
