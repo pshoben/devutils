@@ -1341,5 +1341,93 @@ const string EmapiPublicMulticastAddress::getMessageName() const
 }
 
 
+/* -------------------------------------------------
+ */
+EmapiHeartbeat::EmapiHeartbeat()
+{
+	mTimestamp = NULL;
+	mPartition = NULL;
 }
+
+EmapiHeartbeat::~EmapiHeartbeat()
+{
+}
+
+const string EmapiHeartbeat::to_string(string indent) const
+{
+	stringstream ss;
+	ss << indent << getMessageName() << ":\n";
+
+	string ret = ss.str();
+	return ret;
+}
+
+const int EmapiHeartbeat::getMessageType() const
+{
+	return EmapiMessageType_EmapiHeartbeat;
+}
+
+
+//void EmapiHeartbeat::traceMessage(MessageTrace *pTrace, int pLevel) const
+//{
+//}
+
+
+void EmapiHeartbeat::unpack(TagwireDecoder& pDecoder)
+{
+	while( pDecoder.hasMoreTags()) {
+		int tTag = pDecoder.getNextTag();
+		switch(tTag) {
+		case 1:
+			pDecoder.readInteger(mSubscriptionGroup);
+			mSubscriptionGroup = copyAttribute( mSubscriptionGroup );
+			break;
+		case 2:
+			pDecoder.readLong(mSequenceNumber);
+			break;
+		case 3:
+			pDecoder.readString(mTimeOfEvent);
+			break;
+		case 4:
+			pDecoder.readBoolean(mSequenceIndicator);
+			mSequenceIndicator = copyAttribute( mSequenceIndicator );
+			break;
+		case 5:
+			pDecoder.readString(mTimestamp);
+			break;
+		case 6:
+			pDecoder.readInteger(mPartition);
+			mPartition = copyAttribute( mPartition );
+			break;
+		default:
+			pDecoder.skipUnknownTag();
+			break;
+		}
+	}
+}
+
+void EmapiHeartbeat::pack(TagwireEncoder& pEncoder) const
+{
+	pEncoder.beginGroup();
+	pEncoder.appendInteger(1, mSubscriptionGroup);
+	pEncoder.appendLong(2, mSequenceNumber);
+	pEncoder.appendString(3, mTimeOfEvent);
+	pEncoder.appendBoolean(4, mSequenceIndicator);
+	pEncoder.appendString(5, mTimestamp);
+	pEncoder.appendInteger(6, mPartition);
+	pEncoder.endGroup();
+}
+
+const int EmapiHeartbeat::getClassId() const
+{
+	return 74;
+}
+
+const string EmapiHeartbeat::getMessageName() const
+{
+	return "EmapiHeartbeat";
+}
+
+
+} // namespace
 
