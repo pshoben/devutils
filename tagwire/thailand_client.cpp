@@ -48,18 +48,26 @@ struct timespec g_send_wait;
 
 void print_twstring(char * s) 
 {
+	if( !s ) {
+		printf("null string\n");
+		return;
+	}
+	char * copy = strdup(s);
+	string tpl_str{copy};
 	try {
-	string tpl_str{s};
-	TagwireDecoder decoder{ (const unsigned char *)tpl_str.c_str(),
-				0,(unsigned int) tpl_str.size()};  
-
-	cout << "got tagwire string : \"" << tpl_str << "\"\n";
-	tpl_req.unpack(decoder);
-	cout << "unpacked:\n" << tpl_req.to_string("");
+		cout << "got tagwire string before: \"" << tpl_str << "\"\n";
+	
+		TagwireDecoder decoder{ (const unsigned char *)tpl_str.c_str(),
+					0,(unsigned int) tpl_str.size()};  
+	
+		//cout << "got tagwire string : \"" << tpl_str << "\"\n";
+		tpl_req.unpack(decoder);
+		cout << "unpacked:\n" << tpl_req.to_string("");
 	} catch ( std::exception e )
 	{
 		printf("Tagwire Decode failed\n");
 	}
+	free(copy);
 }
 
 
@@ -168,21 +176,21 @@ void client_run()
 	char msg_simpleresp[]="231=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=messagereference]";
 	char msg_responsemessage[]="230=[1=1|2=message|3=[3|3]|4=requestid|5=messagereference]";
 
-	string msg_publicmulticastaddress = "110=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmcaddress|8=8"
-					"9=pmcsourceaddress|10=pmcpartitionid|11=F";
+	string msg_publicmulticastaddress = "110=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmcaddress|8=8|9=pmcsourceaddress|10=pmcpartitionid|11=F]";
 	string pma = msg_publicmulticastaddress;
 
-	string msg_publicmulticastpartition = "109=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmcpartitionid|8=payloadcontenttype"
-					"|10=10|11=11|12=12|13=pmccontentid|14=[" + pma + "]|[" + pma + "]|15=F";
+	string msg_publicmulticastpartition = 
+	"109=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmcpartitionid|8=payloadcontenttype|10=10|11=11|12=12|13=pmccontentid|14=[" + pma + "|" + pma + "]|15=F]";
+
 	string pmp = msg_publicmulticastpartition;
 
 	string msg_publicmulticastcontent = "108=[1=key|2=cacheid|3=3|4=4|5=uniqueobjectid|6=timestamp|7=pmccontentid|8=flowidlist"
-					"|9=subscriptiongrouplist|10=[" + pmp + "]|[" + pmp + "]|11=F]";
+					"|9=subscriptiongrouplist|10=[" + pmp + "|" + pmp + "]|11=F]";
 	string pmc = msg_publicmulticastcontent;
 
 	string msg_taxlogonreq="63=[1=T|2=member|3=user|4=password|5=5|6=6|7=7|8=8|9=9]";
 	string msg_taxlogonrsp="64=[1=1|2=message|3=[3|3]|4=requestid|5=reply|6=T|7=7|8=T|"
-					  "9=systemname|10=10|11=11|12=12|13=[" + pmc + "]|[" + pmc + "]|14=messagref]";
+					  "9=systemname|10=10|11=11|12=12|13=[" + pmc + "|" + pmc + "]|14=messagref]";
 	
 	if( g_interactive ) {
 		printf("Interactive mode.\n"
@@ -280,23 +288,24 @@ void client_run()
 		//send_array[i++]= msg_taxconnectorentry.c_str();
 		send_array[i++]= msg_publicmulticastaddress.c_str();
 		//send_array[i++]= msg_publicmulticastaddress.c_str();
-		send_array[i++]= msg_publicmulticastpartition.c_str();
 		//send_array[i++]= msg_publicmulticastpartition.c_str();
-		send_array[i++]= msg_publicmulticastcontent.c_str();
+		//send_array[i++]= msg_publicmulticastpartition.c_str();
+		//send_array[i++]= msg_publicmulticastcontent.c_str();
 		//send_array[i++]= msg_publicmulticastcontent.c_str();
 		send_array[i++]= msg_taxlogonreq.c_str();
-		send_array[i++]= msg_taxlogonrsp.c_str();
+		//send_array[i++]= msg_taxlogonrsp.c_str();
 		send_array[i++]= msg_taxprelogonrsp.c_str();
 
-		int last_index = 2; // i;	
+		int last_index =  i;	
 		char copy_recv_buffer[MAX_LINE+1];
 
 		for( i = 0 ; i <= last_index ; i++ ) {
 			strcpy( g_send_string, send_array[i]);
 			int sent_count = 0 ;
 			while( g_send_repeats == -1 || sent_count < g_send_repeats ) {
-	
-				print_twstring( g_send_string ); 
+
+				printf("\n============================================================\n");	
+				//print_twstring( g_send_string ); 
 				printf("sending message: \"%s\"\n", g_send_string );
 	
 				strncpy(buf, g_send_string, sizeof(buf)-1);
@@ -325,7 +334,7 @@ void client_run()
 				} while( errno == EWOULDBLOCK && ( n<1 ) && countdown-->0 );
 				*p=0; // add null terminator
 				printf("recv message:\"%s\"\n",copy_recv_buffer);
-				print_twstring( copy_recv_buffer ); 
+				//print_twstring( copy_recv_buffer ); 
 				nanosleep( &g_send_wait, 0 );
 				sent_count++;
 			}

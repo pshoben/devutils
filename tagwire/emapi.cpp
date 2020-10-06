@@ -40,19 +40,27 @@ MessageDataIf * getMessageClass( const int pClassId )
 //		return new EmapiOrderCancelRsp();
 //	case EmapiMessageType_EmapiOrderUpdateRsp:
 //		return new EmapiOrderUpdateRsp();
-//	case EmapiMessageType_EmapiTaxLogonRsp:
-//		return new EmapiTaxLogonRsp();
-//	case EmapiMessageType_EmapiTaxPreLogonRsp:
-//		return new EmapiTaxPreLogonRsp();
+	case EmapiMessageType_EmapiTaxLogonReq:
+		return new EmapiTaxLogonReq();
+	case EmapiMessageType_EmapiTaxLogonRsp:
+		return new EmapiTaxLogonRsp();
 //	case EmapiMessageType_EmapiTaxLogoutRsp:
 //		return new EmapiTaxLogoutRsp();
 //
 	case EmapiMessageType_EmapiTaxConnectorEntry:
 		return new EmapiTaxConnectorEntry();
-//	case EmapiMessageType_EmapiResponseMessage:
-//		return new EmapiResponseMessage();
+	case EmapiMessageType_EmapiResponseMessage:
+		return new EmapiResponseMessage();
 	case EmapiMessageType_EmapiSimpleRsp:
 		return new EmapiSimpleRsp();
+
+	case EmapiMessageType_EmapiPublicMulticastContent:
+		return new EmapiPublicMulticastContent();
+	case EmapiMessageType_EmapiPublicMulticastPartition:
+		return new EmapiPublicMulticastPartition();
+	case EmapiMessageType_EmapiPublicMulticastAddress:
+		return new EmapiPublicMulticastAddress();
+
 	}
 	return NULL;
 }
@@ -82,10 +90,11 @@ const string EmapiAbstractMeEvent::to_string(string indent) const
 {
 	stringstream ss;
 	ss << indent << getMessageName() << ":\n" ;
-	ss << indent << "mSubscriptionGroup: " << mSubscriptionGroup << "\n";
+
+	ss << indent << "mSubscriptionGroup: " ; if ( mSubscriptionGroup ) ss << *mSubscriptionGroup << "\n";    else ss << string("null") << "\n" ;
 	ss << indent << "mSequenceNumber: " << mSequenceNumber << "\n";
-	ss << indent << "mTimeOfEvent: " << mTimeOfEvent << "\n";
-	ss << indent << "mSequenceIndicator: " << mSequenceIndicator << "\n";
+	ss << indent << "mTimeOfEvent: " ; if ( mTimeOfEvent ) ss << *mTimeOfEvent << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mSequenceIndicator: " ; if ( mSequenceIndicator ) ss << *mSequenceIndicator << "\n";    else ss << string("null") << "\n" ;
 
 	string ret = ss.str();
 	return ret;
@@ -183,12 +192,16 @@ const string EmapiProteusRefDataMessage::to_string(string indent) const
 {
 	stringstream ss;
 	ss << indent << getMessageName() << ":\n"; 
-	ss << indent << "mKey: " << mKey << "\n";
-	ss << indent << "mCacheId: " << mCacheId << "\n";
+
+	ss << indent << "mKey: " ; if ( mKey ) ss << *mKey << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mCacheId: " ; if ( mCacheId ) ss << *mCacheId << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mAction: " ; if ( mAction ) ss << *mAction << "\n";    else ss << string("null") << "\n" ;
+
 	ss << indent << "mStateSequenceNumber: " << mStateSequenceNumber << "\n";
-	ss << indent << "mUniqueObjectId: " << mUniqueObjectId << "\n";
-	ss << indent << "mTimeStamp: " << mTimeStamp << "\n";
-	ss << indent << "mIsDeleted: " << mIsDeleted << "\n";
+
+	ss << indent << "mUniqueObjectId: " ; if ( mUniqueObjectId ) ss << *mUniqueObjectId << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mTimeStamp: " ; if ( mTimeStamp ) ss << *mTimeStamp << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mIsDeleted: " ; if ( mIsDeleted ) ss << *mIsDeleted << "\n";    else ss << string("null") << "\n" ;
 
 	string ret = ss.str();
 	return ret;
@@ -215,6 +228,7 @@ void EmapiProteusRefDataMessage::unpack(TagwireDecoder& pDecoder)
 {
 	while( pDecoder.hasMoreTags()) {
 		int tTag = pDecoder.getNextTag();
+	printf("%s:%d got tag : %d\n", __FILE__, __LINE__,tTag  );
 		switch(tTag) {
 		case 1:
 			pDecoder.readString(mKey);
@@ -371,8 +385,8 @@ EmapiSimpleRsp::~EmapiSimpleRsp()
 const string EmapiSimpleRsp::to_string(string indent) const
 {
 	stringstream ss;
-	ss << indent << getMessageName() << ":\n" 
-	<< indent << "mReply: " << mReply << "\n";
+	ss << indent << getMessageName() << ":\n"; 
+	ss << indent << "mReply: " ; if ( mReply ) ss << *mReply << "\n";    else ss << string("null") << "\n" ;
 	string ret = ss.str();
 	return ret;
 }
@@ -477,13 +491,15 @@ EmapiResponseMessage::~EmapiResponseMessage()
 const string EmapiResponseMessage::to_string(string indent) const
 {
 	stringstream ss;
-	ss << indent << getMessageName() << ":\n" 
-	<< indent << "mCode: " << mCode << "\n"
-	<< indent << "mMessage: " << mMessage << "\n"
-	<< indent << "mSubCode: " << mSubCode << "\n"
-	<< indent << "mRequestId: " << mRequestId << "\n"
-	<< indent << "mMessageReference: " << mMessageReference << "\n"
-	;
+	ss << indent << getMessageName() << ":\n" ;
+	ss << indent << "mCode: " << mCode << "\n";
+	ss << indent << "mMessage: " ; if ( mMessage ) ss << *mMessage << "\n";    else ss << string("null") << "\n" ;
+
+	ss << indent << "mSubCode: " ; if ( mSubCode ) { for ( auto x: *mSubCode ) ss << x << " " ; ss << "\n"; } else ss << 0 << "\n" ;
+
+	ss << indent << "mRequestId: " ; if ( mRequestId ) ss << *mRequestId << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mMessageReference: " ; if ( mMessageReference ) ss << *mMessageReference << "\n";    else ss << string("null") << "\n" ;
+
 	string ret = ss.str();
 	return ret;
 }
@@ -654,6 +670,124 @@ const string EmapiTaxPreLogonReq::getMessageName() const
 {
 	return "EmapiTaxPreLogonReq";
 }
+
+
+/* -------------------------------------------------
+ */
+EmapiTaxLogonReq::EmapiTaxLogonReq()
+{
+	mMember = NULL;
+	mUser = NULL;
+	mMajorVersion = 0;
+	mMinorVersion = 0;
+	mMicroVersion = 0;
+}
+
+EmapiTaxLogonReq::~EmapiTaxLogonReq()
+{
+	if ( mMember != NULL ) {
+		delete mMember;
+	}
+	if ( mUser != NULL ) {
+		delete mUser;
+	}
+}
+
+const string EmapiTaxLogonReq::to_string(string indent) const
+{
+	stringstream ss;
+	ss << indent << getMessageName() << ":\n";
+	ss << static_cast<EmapiRequestMessage>(*this).to_string( indent + "    " ) << "\n";
+	ss << indent << "mMember: " << (( mMember ) ? *mMember : string( "null" )) << "\n" ;
+	ss << indent << "mUser: " << (( mUser ) ? *mUser : string( "null" )) << "\n";
+	ss << indent << "mPassword: " << (( mPassword ) ? *mPassword : string( "null" )) << "\n"; 
+	ss << indent << "mTicket: "; if ( mTicket ) ss << *mTicket << "\n" ; else ss << string( "null" ) << "\n"; 
+	ss << indent << "mPossDupSessId: "; if ( mPossDupSessId ) ss << *mPossDupSessId << "\n" ; else ss << string( "null" ) << "\n"; 
+	ss << indent << "mMajorVersion: " << mMajorVersion << "\n";
+	ss << indent << "mMinorVersion: " << mMinorVersion << "\n";
+	ss << indent << "mMicroVersion: " << mMicroVersion << "\n";
+
+	string ret = ss.str();
+	return ret;
+}
+
+const int EmapiTaxLogonReq::getMessageType() const
+{
+	return EmapiMessageType_EmapiTaxLogonReq;
+}
+
+
+//void EmapiTaxLogonReq::traceMessage(MessageTrace *pTrace, int pLevel) const
+//{
+//}
+
+
+void EmapiTaxLogonReq::unpack(TagwireDecoder& pDecoder)
+{
+	while( pDecoder.hasMoreTags()) {
+		int tTag = pDecoder.getNextTag();
+		switch( tTag) {
+		case 1:
+			pDecoder.readBoolean(mPossDup);
+			break;
+		case 2:
+			pDecoder.readString(mMember);
+			break;
+		case 3:
+			pDecoder.readString(mUser);
+			break;
+		case 4:
+			pDecoder.readString(mPassword);
+			break;
+		case 5:
+			pDecoder.readLong(mTicket);
+			mTicket = copyAttribute(mTicket);
+			break;
+		case 6:
+			pDecoder.readInteger(mPossDupSessId);
+			mPossDupSessId = copyAttribute(mPossDupSessId);
+			break;
+		case 7:
+			pDecoder.readInteger(mMajorVersion);
+			break;
+		case 8:
+			pDecoder.readInteger(mMinorVersion);
+			break;
+		case 9:
+			pDecoder.readInteger(mMicroVersion);
+			break;
+		default:
+			pDecoder.skipUnknownTag();
+			break;
+		}
+	}
+}
+
+void EmapiTaxLogonReq::pack(TagwireEncoder& pEncoder) const
+{
+	pEncoder.beginGroup();
+	pEncoder.appendBoolean(1, mPossDup);
+	pEncoder.appendString(2, mMember);
+	pEncoder.appendString(3, mUser);
+	pEncoder.appendString(4, mPassword);
+	pEncoder.appendLong(5, mTicket);
+	pEncoder.appendInteger(6, mPossDupSessId);
+	pEncoder.appendInteger(7, mMajorVersion);
+	pEncoder.appendInteger(8, mMinorVersion);
+	pEncoder.appendInteger(9, mMicroVersion);
+	pEncoder.endGroup();
+}
+
+const int EmapiTaxLogonReq::getClassId() const
+{
+	return 63;
+}
+
+const string EmapiTaxLogonReq::getMessageName() const
+{
+	return "EmapiTaxLogonReq";
+}
+
 /* -------------------------------------------------
  */
 EmapiTaxConnectorEntry::EmapiTaxConnectorEntry()
@@ -765,12 +899,11 @@ EmapiTaxPreLogonRsp::~EmapiTaxPreLogonRsp()
 const string EmapiTaxPreLogonRsp::to_string(string indent) const
 {
 	stringstream ss;
-	ss << indent << getMessageName() << ":\n"
-	<< static_cast<EmapiResponseMessage>(*this).to_string( indent + "    " ) << "\n";
-	ss << indent << "mPort: " ; // << (( mPort ) ? *mPort : string( "null" )) << "\n" 
-	ss << indent << "mTicket: " ; // << (( mTicket ) ? *mTicket : string( "null" )) << "\n" 
-	ss << indent << "mTaxConnectors: " << "\n"; // << (( mTaxConnectors ) ? *mTaxConnectors : string( "null" )) << "\n" 
-	;
+	ss << indent << getMessageName() << ":\n";
+	ss << indent << "mAddress: " ; if ( mAddress ) ss << *mAddress << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mPort: " ; if ( mPort ) ss << *mPort << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mTicket: " ; if ( mTicket ) ss << *mTicket << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mTaxConnectors: " << "\n"; if ( mTaxConnectors ) for( auto x: *mTaxConnectors ) x->to_string( indent + "  " ); else ss << 0 << "\n" ;
 
 	string ret = ss.str();
 	return ret;
@@ -881,14 +1014,14 @@ const string EmapiTaxLogonRsp::to_string(string indent) const
 {
 	stringstream ss;
 	ss << indent << getMessageName() << ":\n";
-	ss << indent << "mLogonAccepted: " << "\n";;  //  if ( mLogonAccepted ) ss << *mLogonAccepted << "\n";    else ss << string("null") << "\n" ;
-	ss << indent << "mLoginStatus: " << "\n";;  //  if ( mLoginStatus ) ss << *mLoginStatus << "\n";    else ss << string("null") << "\n" ;
-	ss << indent << "mIsTestSystem: " << "\n";;  //  if ( mIsTestSystem ) ss << *mIsTestSystem << "\n";    else ss << string("null") << "\n" ;
-	ss << indent << "mSystemName: " << "\n";;  //  if ( msystemName ) ss << *msystemName << "\n";    else ss << string("null") << "\n" ;
-	ss << indent << "mPartitionHbtInterval: " << "\n";;  //  if ( mPartitionHbtInterval ) ss << *mPartitionHbtInterval << "\n";    else ss << string("null") << "\n" ;
-	ss << indent << "mClientbtInterval: " << "\n";;  //  if ( mClientbtInterval ) ss << *mClientbtInterval << "\n";    else ss << string("null") << "\n" ;
-	ss << indent << "mMaxLostHeartbeats: " << "\n";;  //  if ( mMaxLostHeartbeats ) ss << *mMaxLostHeartbeats << "\n";    else ss << string("null") << "\n" ;
-	ss << indent << "mPublicMulticastContent: " << "\n";;  //  if ( mPublicMulticastContent ) ss << *mPublicMulticastContent << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mLogonAccepted: " ; if ( mLogonAccepted ) ss << *mLogonAccepted << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mLoginStatus: " << mLoginStatus << "\n"; 
+	ss << indent << "mIsTestSystem: " ;  if ( mIsTestSystem ) ss << *mIsTestSystem << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mSystemName: " ;  if ( mSystemName ) ss << *mSystemName << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mPartitionHbtInterval: " ;  if ( mPartitionHbtInterval ) ss << *mPartitionHbtInterval << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mClientHbtInterval: ";  if ( mClientHbtInterval ) ss << *mClientHbtInterval << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mMaxLostHeartbeats: ";  if ( mMaxLostHeartbeats ) ss << *mMaxLostHeartbeats << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mPublicMulticastContent: ";  if ( mPublicMulticastContent ) for( auto x: *mPublicMulticastContent ) x->to_string( indent + "  " ); else ss << 0 << "\n" ;
 
 	string ret = ss.str();
 	return ret;
@@ -1014,6 +1147,10 @@ const string EmapiPublicMulticastContent::to_string(string indent) const
 {
 	stringstream ss;
 	ss << indent << getMessageName() << ":\n";
+//	ss << indent << "mPmcContentId: " ; if ( mPmcContentId ) ss << *mPmcContentId << "\n";    else ss << string("null") << "\n" ;
+//	ss << indent << "mFlowIdList: " ; if ( mFlowIdList ) ss << *mFlowIdList << "\n";    else ss << string("null") << "\n" ;
+//	ss << indent << "mSubscriptionGroupList: " ; if ( mSubscriptionGroupList ) ss << *mSubscriptionGroupList << "\n";    else ss << string("null") << "\n" ;
+//	ss << indent << "mPublicMulticastPartitions: ";  if ( mPublicMulticastPartitions ) for( auto x: *mPublicMulticastPartitions ) x->to_string( indent + "  " ); else ss << 0 << "\n" ;
 
 	string ret = ss.str();
 	return ret;
@@ -1035,6 +1172,7 @@ void EmapiPublicMulticastContent::unpack(TagwireDecoder& pDecoder)
 
 	while( pDecoder.hasMoreTags()) {
 		int tTag = pDecoder.getNextTag();
+	printf("%s:%d got tag : %d\n", __FILE__, __LINE__,tTag  );
 		switch( tTag) {
 		case 1:
 			pDecoder.readString(mKey);
@@ -1126,7 +1264,14 @@ const string EmapiPublicMulticastPartition::to_string(string indent) const
 {
 	stringstream ss;
 	ss << indent << getMessageName() << ":\n";
+	ss << indent << "mPmcPartitionId: " ; if ( mPmcPartitionId ) ss << *mPmcPartitionId << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mPayloadContentType: " ; if ( mPayloadContentType ) ss << *mPayloadContentType << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mTimeToLive: " ; if ( mTimeToLive ) ss << *mTimeToLive << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mBundleSize: " ; if ( mBundleSize ) ss << *mBundleSize << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mHeartbeatInterval: " ; if ( mHeartbeatInterval ) ss << *mHeartbeatInterval << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mPmcContentId: " ; if ( mPmcContentId ) ss << *mPmcContentId << "\n";    else ss << string("null") << "\n" ;
 
+	ss << indent << "mPublicMulticastAddresses: ";  if ( mPublicMulticastAddresses ) for( auto x: *mPublicMulticastAddresses ) x->to_string( indent + "  " ); else ss << 0 << "\n" ;
 	string ret = ss.str();
 	return ret;
 }
@@ -1147,6 +1292,7 @@ void EmapiPublicMulticastPartition::unpack(TagwireDecoder& pDecoder)
 
 	while( pDecoder.hasMoreTags()) {
 		int tTag = pDecoder.getNextTag();
+printf("%s:%d got tag : %d\n", __FILE__, __LINE__,tTag  );
 		switch( tTag) {
 		case 1:
 			pDecoder.readString(mKey);
@@ -1250,6 +1396,10 @@ const string EmapiPublicMulticastAddress::to_string(string indent) const
 {
 	stringstream ss;
 	ss << indent << getMessageName() << ":\n";
+	ss << indent << "mPmcAddress: " ; if ( mPmcAddress ) ss << *mPmcAddress << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mPmcPort: " ; if ( mPmcPort ) ss << *mPmcPort << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mPmcSourceAddress: " ; if ( mPmcSourceAddress ) ss << *mPmcSourceAddress << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mPmcPartitionId: " ; if ( mPmcPartitionId ) ss << *mPmcPartitionId << "\n";    else ss << string("null") << "\n" ;
 
 	string ret = ss.str();
 	return ret;
@@ -1284,7 +1434,6 @@ void EmapiPublicMulticastAddress::unpack(TagwireDecoder& pDecoder)
 		case 4:
 			pDecoder.readLong(mStateSequenceNumber);
 			break;
-
 		case 5:
 			pDecoder.readString(mUniqueObjectId);
 			break;
@@ -1358,6 +1507,8 @@ const string EmapiHeartbeat::to_string(string indent) const
 {
 	stringstream ss;
 	ss << indent << getMessageName() << ":\n";
+	ss << indent << "mTimestamp: " ; if ( mTimestamp ) ss << *mTimestamp << "\n";    else ss << string("null") << "\n" ;
+	ss << indent << "mPartition: " ; if ( mPartition ) ss << *mPartition << "\n";    else ss << string("null") << "\n" ;
 
 	string ret = ss.str();
 	return ret;
